@@ -1,3 +1,4 @@
+import 'package:app/model/sculpture.dart';
 import 'package:app/model/user.dart';
 
 class Temple {
@@ -5,6 +6,7 @@ class Temple {
   String name;
   String description;
   String coverImage;
+  List<Sculpture> sculptures;
 
-  Temple({String? templeId, required this.name, required this.description, required this.coverImage}): id = templeId ?? uuid.v4();
+  Temple({String? templeId, required this.name, required this.description, required this.coverImage, required this.sculptures}): id = templeId ?? uuid.v4();
 }
