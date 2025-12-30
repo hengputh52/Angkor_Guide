@@ -1,12 +1,22 @@
-import 'package:app/model/sculpture.dart';
 import 'package:app/model/user.dart';
 
 class Temple {
-  String id;
-  String name;
-  String description;
-  String coverImage;
-  List<Sculpture> sculptures;
+  final String id;
+  final Map<String, String> name;
+  final Map<String, String> description;
+  final List<String> coverImage;
+  final String mapAsset;
 
-  Temple({String? templeId, required this.name, required this.description, required this.coverImage, required this.sculptures}): id = templeId ?? uuid.v4();
+  Temple({String? templeId, required this.name, required this.description, required this.coverImage, required this.mapAsset}): id = templeId ?? uuid.v4();
+
+  factory Temple.fromJson(Map<String, dynamic> json)
+  {
+    return Temple(
+      templeId: json['id'],
+      name: Map<String, String>.from(json['name']),
+      description: Map<String , String>.from(json['description']),
+      coverImage: json['coverImage'],
+      mapAsset: json['mapAsset']);
+  }
+
 }

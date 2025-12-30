@@ -7,4 +7,11 @@ class User{
   String fullName;
 
   User({String? userId,required this.fullName}): id = userId ?? uuid.v4();
+
+  factory User.fromJson(Map<String, dynamic> json)
+  {
+    return User(
+      userId: json['id'],
+      fullName: json['fullName']);
+  }
 }

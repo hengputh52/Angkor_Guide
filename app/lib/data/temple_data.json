@@ -1,0 +1,21 @@
+[
+  {
+    "id": "angkor_wat",
+    "name": {
+      "en": "Angkor Wat",
+      "km": "អង្គរវត្ត",
+      "fr": "Angkor Vat",
+      "zh": "吴哥窟"
+    },
+    "description": {
+      "en": "Angkor Wat is the largest religious monument in the world, built in the 12th century.",
+      "km": "អង្គរវត្តគឺជាសំណង់សាសនាធំបំផុតនៅលើពិភពលោក ដែលសាងសង់នៅសតវត្សទី១២។",
+      "fr": "Angkor Wat est le plus grand monument religieux du monde, construit au XIIe siècle.",
+      "zh": "吴哥窟是世界上最大的宗教建筑，建于12世纪。"
+    },
+    "coverImage": [
+        "assets/images/angkor_wat.jpg"
+    ],
+    "mapAsset": "assets/maps/angkor_wat_map.png"
+  }
+]
