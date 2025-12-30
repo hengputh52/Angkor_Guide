@@ -1,7 +1,9 @@
+import 'package:app/screen/start_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -13,12 +15,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DevicePreview(builder: (context) =>
     MaterialApp(
+      useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Colors.white,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.white,
+          brightness: Brightness.light,
+          background: Colors.white,
+          surface: Colors.white,
+        ),
       ),
-      home: const Text('Flutter Demo Home Page'),
+      home: StartScreen(),
     )
     );
   }

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "route_standard",
+    "templeId": "angkor_wat",
+    "name": {
+      "en": "Standard Tour",
+      "km": "ទេសចរណ៍ស្តង់ដារ",
+      "fr": "Visite standard",
+      "zh": "标准路线"
+    },
+    "poiOrder": [
+      "poi_001",
+      "poi_002",
+      "poi_003",
+      "poi_004"
+    ]
+  }
+]

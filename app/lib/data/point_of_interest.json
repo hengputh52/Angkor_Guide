@@ -1,0 +1,24 @@
+[
+  {
+    "id": "poi_001",
+    "templeId": "angkor_wat",
+    "title": {
+      "en": "Entrance Causeway",
+      "km": "ផ្លូវចូល",
+      "fr": "Chaussée d’entrée",
+      "zh": "入口大道"
+    },
+    "description": {
+      "en": "This causeway symbolizes the bridge between the human world and the divine.",
+      "km": "ផ្លូវនេះតំណាងឱ្យស្ពានរវាងពិភពមនុស្ស និងពិភពទេវតា។",
+      "fr": "Cette chaussée symbolise le lien entre le monde humain et le monde divin.",
+      "zh": "这条大道象征着人间与神界之间的桥梁。"
+    },
+    "audio": {
+      "en": "assets/audio/en/entrance.mp3",
+      "km": "assets/audio/km/entrance.mp3",
+      "fr": "assets/audio/fr/entrance.mp3",
+      "zh": "assets/audio/zh/entrance.mp3"
+    }
+  }
+]
