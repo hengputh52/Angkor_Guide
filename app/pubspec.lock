@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
+  background:
+    dependency: "direct main"
+    description:
+      name: background
+      sha256: "877ad7222a8f9d76f300e93e90983102a61a0d5fa026a928346cc4316150eb9a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.1"
   boolean_selector:
     dependency: transitive
     description:
