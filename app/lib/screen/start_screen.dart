@@ -1,20 +1,63 @@
+import 'package:app/screen/signup_screen.dart';
+import 'package:app/widget/animations/fade_slide_animation.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class StartScreen extends StatelessWidget {
+class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
+
+  @override
+  State<StartScreen> createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  late VideoPlayerController _videoController;
+
+  @override
+  void initState() {
+    super.initState();
+    _videoController = VideoPlayerController.network(
+      'assets/videos/angkor_wat_video_start.mp4',
+    )
+      ..setLooping(true)
+      ..setVolume(0.0)
+      ..initialize().then((_) {
+        _videoController.play();
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    super.dispose();
+  }
+
+  void onStart()
+  {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => const SignUpScreen())
+      );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-
-          /// Background Image
+          /// Background Video
           Positioned.fill(
-            child: Image.asset(
-              'assets/logo/logo.avif',
-              fit: BoxFit.cover,
-            ),
+            child: _videoController.value.isInitialized
+                ? FittedBox(
+                    fit: BoxFit.cover,
+                    child: SizedBox(
+                      width: _videoController.value.size.width,
+                      height: _videoController.value.size.height,
+                      child: VideoPlayer(_videoController),
+                    ),
+                  )
+                : Container(color: const Color.fromARGB(255, 189, 177, 177)),
           ),
 
           /// Top App Title
@@ -24,18 +67,19 @@ class StartScreen extends StatelessWidget {
             child: Row(
               children: const [
                 CircleAvatar(
-                  radius: 18,
-                  backgroundImage: AssetImage(
-                    'assets/logo/logo.avif', // optional
-                  ),
+                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  backgroundImage: AssetImage('assets/images/bayon_face.png'),
+                  //child: Icon(Icons.temple_hindu, color: Colors.white),
+                  
                 ),
+                
                 SizedBox(width: 10),
                 Text(
                   'Angkor Guide',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -43,15 +87,16 @@ class StartScreen extends StatelessWidget {
           ),
 
           /// Welcome Text Overlay
-          Align(
-            alignment: Alignment.centerLeft,
+          Positioned(
+            bottom: 150,
+            
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(12),
-              ),
+              // decoration: BoxDecoration(
+              //   color: Colors.black.withOpacity(0.5),
+              //   borderRadius: BorderRadius.circular(12),
+              // ),
               child: const Text(
                 'Welcome to\nAngkor Wat',
                 style: TextStyle(
@@ -71,25 +116,31 @@ class StartScreen extends StatelessWidget {
             right: 20,
             child: SizedBox(
               height: 55,
-              child: ElevatedButton(
+              child: FadeSlideAnimation(
+                child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFAEEEEE),
+                  backgroundColor: Colors.white10,
+                  shadowColor: Colors.transparent,
+                  
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(0),
+                    side: BorderSide(
+                      color: Colors.white24,
+                      width: 0.5
+                    )
                   ),
                 ),
-                onPressed: () {
-                  // TODO: Navigate to Home / Language Select Screen
-                },
+                onPressed: onStart,
                 child: const Text(
                   'Start Explore',
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
                   ),
                 ),
               ),
+            ),
             ),
           ),
         ],

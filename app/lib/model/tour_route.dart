@@ -1,4 +1,3 @@
-import 'package:app/model/point_of_interest.dart';
 import 'package:app/model/user.dart';
 
 class TourRoute {

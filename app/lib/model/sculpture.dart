@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:app/model/user.dart';
 
