@@ -1,4 +1,6 @@
+import 'package:app/screen/home_page.dart';
 import 'package:app/widget/animations/fade_slide_animation.dart';
+import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +12,41 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _formkey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
 
+  @override 
+  void initState()
+  {
+    super.initState();
+  }
+
+  @override  
+  void dispose()
+  {
+    super.dispose();
+    _nameController.dispose();
+  }
+
+  void onContinue()
+  {
+    if(_formkey.currentState != null && _formkey.currentState!.validate())
+    {
+      Navigator.of(context).pushReplacement(
+              FlowPageRoute(page: const HomeScreen()),
+            );
+    }
+  }
+
+  String? validateName(String? value)
+  {
+    if(value == null || value.isEmpty)
+    {
+      return 'Name cannot be empty';
+    }
+    return null;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Stack(
         children: [
           // Background illustration image
+          
           Positioned.fill(
             child: Image.asset(
               'assets/images/angkor_thom.png',
@@ -80,76 +116,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: FadeSlideAnimation(
                     beginOffset: Offset(0, 0.4),
                     child: 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Full Name',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
+                  Form(
+                    key: _formkey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Full Name',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your name',
-                          hintStyle: TextStyle(color: const Color.fromARGB(255, 229, 224, 224)),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
-                            
-                          
-                            
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(0),
-                            borderSide: BorderSide(color: Colors.white70, width: 0.5),
-                            
-                            
-                            
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(0),
-                            borderSide: const BorderSide(color: Colors.white),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white10
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 55,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                  
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0),
+                        const SizedBox(height: 8),
+                        TextFormField(
+                            validator: validateName,
+                            style: TextStyle(color: Colors.white),
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              hintText: 'Enter your name',
                               
+                              hintStyle: TextStyle(color: const Color.fromARGB(255, 229, 224, 224)),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                                
+                              
+                                
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                borderSide: BorderSide(color: Colors.white70, width: 0.5),
+                                
+                                
+                                
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                borderSide: const BorderSide(color: Colors.white),
+                                
+                              ),
+                              filled: true,
+                              fillColor: Colors.white10
                             ),
                           ),
-                          onPressed: () {
-                            if (_nameController.text.isNotEmpty) {
-                              // Save locally (SharedPreferences / SQLite)
-                              Navigator.pushNamed(context, '/home');
-                            }
-                          },
-                          child: const Text(
-                            'Continue',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                        
+                        const SizedBox(height: 30),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                    
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                
+                              ),
+                            ),
+                            onPressed: onContinue,
+                            
+                            child: const Text(
+                              'Continue',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 ),
