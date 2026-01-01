@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     MaterialApp(
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Angkor Tour',
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,

@@ -119,8 +119,8 @@ class _StartScreenState extends State<StartScreen> {
               child: FadeSlideAnimation(
                 child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white10,
-                  shadowColor: Colors.transparent,
+                  backgroundColor: Colors.white,
+                  //shadowColor: Colors.transparent,
                   
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
@@ -134,9 +134,9 @@ class _StartScreenState extends State<StartScreen> {
                 child: const Text(
                   'Start Explore',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),
