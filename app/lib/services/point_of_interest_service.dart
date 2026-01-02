@@ -1,15 +1,15 @@
-import 'package:app/model/point_of_interest.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import '../model/point_of_interest.dart';
 
-class PointOfInterestService {
-  final List<PointOfInterest> points;
+class PoiService {
+  static Future<List<PointOfInterest>> loadPOIs() async {
+    final jsonString =
+        await rootBundle.loadString('assets/data/points_of_interest.json');
+    final List<dynamic> jsonList = json.decode(jsonString);
 
-  PointOfInterestService(this.points);
-
-  List<PointOfInterest> getPOIsByTemple(String templeId) {
-    return points.where((p) => p.templeId == templeId).toList();
-  }
-
-  PointOfInterest? getPOIById(String id) {
-    return points.firstWhere((p) => p.id == id);
+    return jsonList
+        .map((json) => PointOfInterest.fromJson(json))
+        .toList();
   }
 }

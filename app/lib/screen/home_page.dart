@@ -1,4 +1,4 @@
-import 'package:app/screen/audio_guide_screen.dart';
+import 'package:app/screen/audio_screen/audio_guide_screen.dart';
 import 'package:app/widget/action_button.dart';
 import 'package:app/widget/drawer_bar.dart';
 import 'package:app/widget/explore_card.dart';
