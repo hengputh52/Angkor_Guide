@@ -1,24 +1,43 @@
 import 'package:app/model/user.dart';
 
-enum PointInTemple {entrace, gallery, tower, exit}
+enum PointInTemple { entrance, gallery, tower, exit }
 
-class PointOfInterest{
+class PointOfInterest {
   final String id;
   final String templeId;
+
+  // Localized name
   final Map<String, String> name;
-  final Map<String,PointInTemple> type;
+
+  // One type per POI
+  final PointInTemple type;
+
+  // Localized audio path
   final Map<String, String> audio;
 
-  PointOfInterest({String? pointId, required this.templeId, required this.name, required this.type,required this.audio}) : id = pointId ?? uuid.v4();
+  // Optional but very useful
+  final int order; // for audio list order
+  final String image;
 
-  factory PointOfInterest.fromJson(Map<String, dynamic> json)
-  {
+  PointOfInterest({
+    String? pointId,
+    required this.templeId,
+    required this.name,
+    required this.type,
+    required this.audio,
+    required this.order,
+    required this.image,
+  }) : id = pointId ?? uuid.v4();
+
+  factory PointOfInterest.fromJson(Map<String, dynamic> json) {
     return PointOfInterest(
       pointId: json['id'],
       templeId: json['templeId'],
       name: Map<String, String>.from(json['name']),
-      type: Map<String, PointInTemple>.from(json['type']),
+      type: PointInTemple.values.byName(json['type']),
       audio: Map<String, String>.from(json['audio']),
-      );
+      order: json['order'],
+      image: json['image'],
+    );
   }
 }

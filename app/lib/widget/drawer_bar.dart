@@ -1,3 +1,5 @@
+import 'package:app/screen/audio_screen/audio_guide_screen.dart';
+import 'package:app/screen/home_page.dart';
 import 'package:flutter/material.dart';
 
 class DrawerBar extends StatelessWidget {
@@ -5,7 +7,24 @@ class DrawerBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    void onHome()
+    {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen())
+      );
+    }
+
+    void onAudio()
+    {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AudioGuideScreen())
+      );
+    }
     return Drawer(
+      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         
@@ -14,13 +33,13 @@ class DrawerBar extends StatelessWidget {
           _IconFeature(
             icon: Icons.home,
             title: 'Home', 
-            onTap: (){}
+            onTap: onHome
           ),
 
           _IconFeature(
             icon: Icons.headphones,
             title: 'Audio', 
-            onTap: (){}
+            onTap: onAudio
           ),
 
           _IconFeature(
@@ -60,12 +79,11 @@ class _IconFeature extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     
-    return Container(
-      //color: Colors.black,
-      child: SizedBox(
+    return SizedBox(
         height: 50,
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
             elevation: 0,
             alignment: Alignment.centerLeft,
             shape: RoundedRectangleBorder(
@@ -77,7 +95,7 @@ class _IconFeature extends StatelessWidget{
           onPressed: onTap,
           
           ),
-      )
-    );
+      );
+    
   }
 }
