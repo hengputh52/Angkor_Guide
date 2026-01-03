@@ -8,7 +8,7 @@ class AudioGuideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    void onStart()
+  void onStart()
     {
       Navigator.push(
         context,

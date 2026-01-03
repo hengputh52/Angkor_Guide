@@ -1,16 +1,15 @@
-import 'package:app/model/point_of_interest.dart';
 import 'package:flutter/material.dart';
 
 class AudioGuideItem extends StatelessWidget {
-  final PointOfInterest poi;
-  final String currentLang;
+  final String title;
+  final String imagePath;
   final VoidCallback onTap;
   final int number; // Add this
 
   const AudioGuideItem({
     super.key,
-    required this.poi,
-    required this.currentLang,
+    required this.title,
+    required this.imagePath,
     required this.onTap,
     required this.number, // Add this
   });
@@ -37,12 +36,12 @@ class AudioGuideItem extends StatelessWidget {
             const SizedBox(width: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: Image.asset(poi.image, width: 60, fit: BoxFit.cover),
+              child: Image.asset(imagePath, width: 60, fit: BoxFit.cover),
             ),
           ],
         ),
-        title: Text(poi.name[currentLang] ?? ''),
-        subtitle: Text(poi.type.name.toUpperCase()),
+        title: Text(title),
+        //subtitle: Text(type.toUpperCase()),
         trailing: const Icon(Icons.favorite),
         onTap: onTap,
       ),

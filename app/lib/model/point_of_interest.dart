@@ -1,43 +1,39 @@
-import 'package:app/model/user.dart';
+import 'audio_guide.dart';
+import 'language.dart';
 
-enum PointInTemple { entrance, gallery, tower, exit }
+enum TypeOfDestination {entrance, gallery, tower, exit}
 
 class PointOfInterest {
   final String id;
-  final String templeId;
-
-  // Localized name
-  final Map<String, String> name;
-
-  // One type per POI
-  final PointInTemple type;
-
-  // Localized audio path
-  final Map<String, String> audio;
-
-  // Optional but very useful
-  final int order; // for audio list order
+  final int order;
+  final TypeOfDestination type;
   final String image;
+  final Map<Language, AudioGuide> guides;
 
   PointOfInterest({
-    String? pointId,
-    required this.templeId,
-    required this.name,
-    required this.type,
-    required this.audio,
+    required this.id,
     required this.order,
+    required this.type,
     required this.image,
-  }) : id = pointId ?? uuid.v4();
+    required this.guides,
+  });
 
   factory PointOfInterest.fromJson(Map<String, dynamic> json) {
+    final Map<Language, AudioGuide> guides = {};
+
+    // Only parse guides if it exists and is a map
+    if (json['guides'] != null && json['guides'] is Map<String, dynamic>) {
+      (json['guides'] as Map<String, dynamic>).forEach((lang, value) {
+        guides[Language.values.byName(lang)] = AudioGuide.fromJson(lang, value);
+      });
+    }
+
     return PointOfInterest(
-      pointId: json['id'],
-      templeId: json['templeId'],
-      name: Map<String, String>.from(json['name']),
-      type: PointInTemple.values.byName(json['type']),
-      audio: Map<String, String>.from(json['audio']),
-      order: json['order'],
-      image: json['image'],
+      id: json['id'] ?? '',
+      order: json['order'] ?? 0,
+      type: TypeOfDestination.values.byName(json['type'] ?? 'entrance'),
+      image: json['image'] ?? '',
+      guides: guides,
     );
   }
 }
