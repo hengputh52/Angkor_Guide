@@ -4,14 +4,26 @@ const uuid = Uuid();
 
 class User{
   String id;
-  String fullName;
+  String firstName;
+  String lastName;
 
-  User({String? userId,required this.fullName}): id = userId ?? uuid.v4();
+  User({String? userId,required this.firstName, required this.lastName}): id = userId ?? uuid.v4();
 
   factory User.fromJson(Map<String, dynamic> json)
   {
     return User(
       userId: json['id'],
-      fullName: json['fullName']);
+      firstName: json['firstName'],
+      lastName: json['lastName']
+      );
+  }
+
+  Map<String, dynamic> toJson()
+  {
+    return {
+      'id' : id,
+      'firstName' : firstName,
+      'lastName' : lastName
+    };
   }
 }

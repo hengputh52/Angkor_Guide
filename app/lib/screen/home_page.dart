@@ -1,26 +1,60 @@
+import 'package:app/model/temple.dart';
 import 'package:app/screen/audio_screen/audio_guide_screen.dart';
+import 'package:app/services/json_loader.dart';
 import 'package:app/widget/action_button.dart';
 import 'package:app/widget/drawer_bar.dart';
 import 'package:app/widget/explore_card.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+final String templeFilePath = 'assets/data/temple_data.json';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-
-  
   @override
-  Widget build(BuildContext context) {
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  List<Temple> temples = [];
 
-    void onAudio()
+    @override 
+  void initState()
+  {
+    super.initState();
+    loadTemples();
+  }
+
+  Future <void> loadTemples() async 
+  {
+    final json = await JsonLoader.load(templeFilePath);
+    final templeList = json['temples'] as List;
+
+    setState(() {
+      temples = templeList.map((e) => Temple.fromJson(e)).toList();
+    });
+  }
+
+  void onAudio()
   {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const AudioGuideScreen())
       );
   }
+
+  void onClickTemple(Temple temple)
+  {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AudioGuideScreen())
+      );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       drawer: DrawerBar(),
       appBar: AppBar(
@@ -38,37 +72,6 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              // const SizedBox(height: 10),
-
-              // // 🔹 Top App Bar
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Row(
-              //       children: [
-              //         const Icon(Icons.menu),
-              //         const SizedBox(width: 12),
-              //     // CircleAvatar(
-              //     //   backgroundImage:
-              //     //       AssetImage('assets/images/angkor_logo.png'),
-              //     // ),
-              //       const SizedBox(width: 10),
-              //       const Text(
-              //       'Angkor Guide',
-              //       style: TextStyle(
-              //         fontSize: 18,
-              //         fontWeight: FontWeight.w600,
-              //         ),
-              //       ),
-              //       ],
-              //     ),
-                  
-              //     LanguageSwitchButton(onLanguageChanged: (lang)
-              //     {
-
-              //     })
-              //   ],
-              // ),
 
               const SizedBox(height: 20),
 
@@ -111,25 +114,19 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 24),
 
               // 🔹 Explore Cards
-              ExploreCard(
-                image: 'assets/images/monk_angkor_wat.png',
-                title: 'Angkor Wat',
-              ),
 
-              const SizedBox(height: 20),
+              ...temples.map(
+                (temple) => Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: ExploreCard(
+                    image: temple.image,
+                    title: temple.name,
+                    onTap: () => onClickTemple(temple),
+                    ),
+                )
+              )
+              
 
-              ExploreCard(
-                image: 'assets/images/back_angkor_wat.png',
-                title: 'Angkor Wat',
-              ),
-
-              const SizedBox(height: 20),
-
-              ExploreCard(
-                image: 'assets/images/sculpture.png',
-                title: 'Angkor Wat Sculpture'),
-
-              const SizedBox(height: 30),
             ],
           ),
         ),

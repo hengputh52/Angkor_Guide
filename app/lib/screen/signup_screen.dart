@@ -1,8 +1,10 @@
+import 'package:app/model/user.dart';
 import 'package:app/screen/home_page.dart';
 import 'package:app/widget/animations/fade_slide_animation.dart';
 import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
+import 'package:app/services/user_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,7 +15,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formkey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
 
   @override 
   void initState()
@@ -25,13 +28,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void dispose()
   {
     super.dispose();
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
   }
 
-  void onContinue()
+  void onContinue() async
   {
     if(_formkey.currentState != null && _formkey.currentState!.validate())
     {
+      final user = User(
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim()
+      );
+      await UserService.writeUserToPrefs(user);
       Navigator.of(context).pushReplacement(
               FlowPageRoute(page: const HomeScreen()),
             );
@@ -133,7 +142,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         TextFormField(
                             validator: validateName,
                             style: TextStyle(color: Colors.white),
-                            controller: _nameController,
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                              hintText: 'Enter your name',
+                              
+                              hintStyle: TextStyle(color: const Color.fromARGB(255, 229, 224, 224)),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                                
+                              
+                                
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                borderSide: BorderSide(color: Colors.white70, width: 0.5),
+                                
+                                
+                                
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                borderSide: const BorderSide(color: Colors.white),
+                                
+                              ),
+                              filled: true,
+                              fillColor: Colors.white10
+                            ),
+                          ),
+                        const SizedBox(height: 30),
+                        TextFormField(
+                            validator: validateName,
+                            style: TextStyle(color: Colors.white),
+                            controller: _lastNameController,
                             decoration: InputDecoration(
                               hintText: 'Enter your name',
                               

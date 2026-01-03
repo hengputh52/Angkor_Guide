@@ -1,22 +1,29 @@
-import 'package:app/model/user.dart';
+import 'point_of_interest.dart';
 
 class Temple {
   final String id;
-  final Map<String, String> name;
-  final Map<String, String> description;
-  final List<String> coverImage;
-  final String mapAsset;
+  final String name;
+  final String image;
+  final String description;
+  final List<PointOfInterest> pois;
 
-  Temple({String? templeId, required this.name, required this.description, required this.coverImage, required this.mapAsset}): id = templeId ?? uuid.v4();
+  Temple({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.description,
+    required this.pois,
+  });
 
-  factory Temple.fromJson(Map<String, dynamic> json)
-  {
+  factory Temple.fromJson(Map<String, dynamic> json) {
     return Temple(
-      templeId: json['id'],
-      name: Map<String, String>.from(json['name']),
-      description: Map<String , String>.from(json['description']),
-      coverImage: json['coverImage'],
-      mapAsset: json['mapAsset']);
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+      description: json['description'],
+      pois: (json['pointsOfInterest'] as List)
+          .map((e) => PointOfInterest.fromJson(e))
+          .toList(),
+    );
   }
-
 }

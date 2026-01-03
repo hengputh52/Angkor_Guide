@@ -1,10 +1,24 @@
-import 'package:app/model/user.dart';
+import 'language.dart';
 
 class AudioGuide {
-  String id;
-  String title;
-  String audioAsset;
-  String relatedId;
+  final Language language;
+  final String title;
+  //final String description;
+  final String audioPath;
 
-  AudioGuide({String? audioId, required this.title, required this.audioAsset, required this.relatedId}) : id = audioId ?? uuid.v4();
+  AudioGuide({
+    required this.language,
+    required this.title,
+    //required this.description,
+    required this.audioPath,
+  });
+
+  factory AudioGuide.fromJson(String langKey, Map<String, dynamic> json) {
+    return AudioGuide(
+      language: Language.values.byName(langKey),
+      title: json['title'],
+      //description: json['description'],
+      audioPath: json['audio'],
+    );
+  }
 }

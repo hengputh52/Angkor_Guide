@@ -1,4 +1,5 @@
 import 'package:app/model/point_of_interest.dart';
+import 'package:app/model/language.dart';
 import 'package:app/screen/audio_screen/audio_guide_player_screen.dart';
 import 'package:app/services/json_loader.dart';
 import 'package:app/widget/audio_guide_item.dart';
@@ -16,91 +17,85 @@ class AudioGuideListScreen extends StatefulWidget {
 }
 
 class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
-
   List<PointOfInterest> spots = [];
-  //bool isLoading = true;
+  Language currentLanguage = Language.en;
 
-  @override  
-  void initState()
-  {
+  @override
+  void initState() {
     super.initState();
-    loadAuidoSpots();
+    loadAudioSpots();
   }
- Future<void> loadAuidoSpots() async
- {
-  final jsonMap = await JsonLoader.load(spotListPath);
-  final jsonList = jsonMap['pointsOfInterest'] as List<dynamic>;
 
-  setState(() {
-    spots = jsonList.map((e) => PointOfInterest.fromJson(e)).toList();
-    //isLoading = false;
-  });
- }
+  Future<void> loadAudioSpots() async {
+    final jsonMap = await JsonLoader.load(spotListPath);
+    final jsonList = jsonMap['pointsOfInterest'] as List<dynamic>;
 
-
-
+    setState(() {
+      spots = jsonList
+          .map((e) => PointOfInterest.fromJson(e))
+          .toList()
+        ..sort((a, b) => a.order.compareTo(b.order));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    // if(isLoading)
-    // {
-    //   return const Center(child: CircularProgressIndicator());
-    // }
     return Scaffold(
       backgroundColor: const Color(0xFFFDF8F5),
-      drawer: DrawerBar(),
+      drawer: const DrawerBar(),
       appBar: AppBar(
-        title: Text('Angkor Guide'),
+        title: const Text('Angkor Guide'),
         actions: [
-          LanguageSwitchButton(onLanguageChanged: (lang) {}),
-          const SizedBox(width: 20)
-          ],
-        ),
+          LanguageSwitchButton(
+            onLanguageChanged: (lang) {
+              setState(() => currentLanguage = Language.en);
+            },
+          ),
+          const SizedBox(width: 16),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            const Text(
-              '10 destination',
-              style: TextStyle(
+            Text(
+              '${spots.length} destinations',
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
               ),
             ),
             const SizedBox(height: 16),
             Expanded(
-                  child: ListView.builder(
-                  itemCount: spots.length,
-                  itemBuilder: (context, index) {
-                    final audioList = spots[index];
+              child: ListView.builder(
+                itemCount: spots.length,
+                itemBuilder: (context, index) {
+                  final poi = spots[index];
+                  final guide =
+                      poi.guides[currentLanguage] ??
+                      poi.guides[Language.en]!;
 
-                    return AudioGuideItem(
-                      number: index + 1,
-                      poi: audioList,
-                      currentLang: 'en',
-                      onTap: (){
-                        Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => AudioGuidePlayerScreen(
-                    title: audioList.name['en']!,
-                    audioPath: audioList.audio['en']!,
-                    imageUrl: audioList.image,
-                    description:
-                        "Historical description loaded per destination",
-                  ),
-                ),
-              );
-                      },
-                      
-                    );
-                  },
-                  
-                )
-              
+                  return AudioGuideItem(
+                    number: index + 1,
+                    title: guide.title,
+                    imagePath: poi.image,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AudioGuidePlayerScreen(
+                            points: spots,
+                            lanuage: currentLanguage,
+                            startIndex: index,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),

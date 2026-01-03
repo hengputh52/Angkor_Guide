@@ -1,18 +1,19 @@
+import 'package:app/model/audio_guide.dart';
+import 'package:app/model/language.dart';
+import 'package:app/model/point_of_interest.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class AudioGuidePlayerScreen extends StatefulWidget {
-  final String title;
-  final String imageUrl;
-  final String description;
-  final String audioPath;
+  final List<PointOfInterest> points;
+  final Language lanuage;
+  final int startIndex;
 
   const AudioGuidePlayerScreen({
     super.key,
-    required this.title,
-    required this.imageUrl,
-    required this.description,
-    required this.audioPath,
+    required this.points,
+    required this.lanuage,
+    required this.startIndex,
   });
 
   @override
@@ -22,6 +23,7 @@ class AudioGuidePlayerScreen extends StatefulWidget {
 
 class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
   final AudioPlayer _player = AudioPlayer();
+  late int currentIndex;
 
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
@@ -31,11 +33,17 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
   @override
   void initState() {
     super.initState();
+    currentIndex = widget.startIndex;
     _initAudio();
   }
 
+  AudioGuide get currentGuide {
+    final poi = widget.points[currentIndex];
+    return poi.guides[widget.lanuage] ?? poi.guides[Language.en]!;
+  }
+
   Future<void> _initAudio() async {
-    await _player.setAsset(widget.audioPath);
+    await _player.setAsset(currentGuide.audioPath);
 
     _duration = _player.duration ?? Duration.zero;
 
@@ -46,6 +54,26 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
     _player.playerStateStream.listen((state) {
       setState(() => isPlaying = state.playing);
     });
+  }
+
+  void _next() {
+    if (currentIndex < widget.points.length - 1) {
+      setState(() {
+        currentIndex++;
+        _initAudio();
+        _player.play();
+      });
+    }
+  }
+
+  void _previous() {
+    if (currentIndex > 0) {
+      setState(() {
+        currentIndex--;
+        _initAudio();
+        _player.play();
+      });
+    }
   }
 
   @override
@@ -61,132 +89,148 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final poi = widget.points[currentIndex];
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: const BackButton(color: Colors.white),
-        title: const Text("Audio Guide"),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: Text(
+          "Now Playing",
+          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            // Image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                widget.imageUrl,
-                height: 280,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Title
-            Text(
-              widget.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-
-            const SizedBox(height: 24),
-
-            // Progress Bar
-            Slider(
-              min: 0,
-              max: _duration.inSeconds.toDouble(),
-              value: _position.inSeconds
-                  .clamp(0, _duration.inSeconds)
-                  .toDouble(),
-              onChanged: (value) {
-                _player.seek(Duration(seconds: value.toInt()));
-              },
-              activeColor: Colors.orange,
-              inactiveColor: Colors.white24,
-            ),
-
-            // Time
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(_format(_position),
-                    style: const TextStyle(color: Colors.white70)),
-                Text(_format(_duration),
-                    style: const TextStyle(color: Colors.white70)),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-
-            // Controls
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.replay_10),
-                  color: Colors.white,
-                  iconSize: 32,
-                  onPressed: () {
-                    _player.seek(
-                      _position - const Duration(seconds: 10),
-                    );
-                  },
-                ),
-                const SizedBox(width: 20),
-                CircleAvatar(
-                  radius: 32,
-                  backgroundColor: Colors.orange,
-                  child: IconButton(
-                    icon: Icon(
-                      isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.black,
-                      size: 36,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              // Album Art or POI Image
+              Container(
+                width: 330,
+                height: 320,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 16,
+                      offset: Offset(0, 8),
                     ),
-                    onPressed: () {
-                      isPlaying ? _player.pause() : _player.play();
-                    },
-                  ),
+                  ],
                 ),
-                const SizedBox(width: 20),
-                IconButton(
-                  icon: const Icon(Icons.forward_10),
-                  color: Colors.white,
-                  iconSize: 32,
-                  onPressed: () {
-                    _player.seek(
-                      _position + const Duration(seconds: 10),
-                    );
-                  },
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 30),
-
-            // Description
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(
-                  widget.description,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.8),
-                    height: 1.6,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    poi.image,
+                   
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Icon(Icons.music_note, size: 80, color: Colors.grey),
                   ),
-                  textAlign: TextAlign.justify,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 32),
+              // Title and Subtitle
+              Text(
+                currentGuide.title,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                poi.type.name.toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Slider
+              Slider(
+                min: 0,
+                max: _duration.inSeconds.toDouble(),
+                value: _position.inSeconds.clamp(0, _duration.inSeconds).toDouble(),
+                onChanged: (v) => _player.seek(Duration(seconds: v.toInt())),
+                activeColor: Colors.green,
+                inactiveColor: Colors.grey[300],
+              ),
+              // Time Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _format(_position),
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                  Text(
+                    _format(_duration),
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // Controls
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.skip_previous, size: 36),
+                    color: Colors.black,
+                    onPressed: _previous,
+                  ),
+                  const SizedBox(width: 16),
+                  CircleAvatar(
+                    radius: 32,
+                    backgroundColor: Colors.green,
+                    child: IconButton(
+                      icon: Icon(
+                        isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: Colors.white,
+                        size: 36,
+                      ),
+                      onPressed: () {
+                        isPlaying ? _player.pause() : _player.play();
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: const Icon(Icons.skip_next, size: 36),
+                    color: Colors.black,
+                    onPressed: _next,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Description/lyrics area
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Text(
+                    currentGuide.title, // Replace with description if available
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontSize: 16,
+                      height: 1.6,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+
