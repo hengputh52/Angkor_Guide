@@ -4,19 +4,19 @@
       "id": "poi-001",
       "order": 1,
       "type": "entrance",
-      "image": "assets/images/audio_spot/angkor_wat_point_1.png",
+      "image": "images/audio_spot/angkor_wat_point_1.png",
       "guides": {
         "en": {
           "title": "Main Entrance (West Gate)",
-          "audio": "assets/audios/en/angkor_wat_audio_1.mp3"
+          "audio": "audios/en/angkor_wat_audio_1.mp3"
         },
         "kh": {
           "title": "ច្រកចូលខាងលិច",
-          "audio": "assets/audios/km/main_entrance.mp3"
+          "audio": "assets/audio/km/main_entrance.mp3"
         },
         "fr": {
           "title": "Entrée principale (Porte Ouest)",
-          "audio": "assets/audios/fr/main_entrance.mp3"
+          "audio": "assets/audio/fr/main_entrance.mp3"
         }
       }
     },
@@ -24,19 +24,19 @@
       "id": "poi-002",
       "order": 2,
       "type": "gallery",
-      "image": "assets/images/audio_spot/angkor_wat_point_2.png",
+      "image": "images/audio_spot/angkor_wat_point_2.png",
       "guides": {
         "en": {
           "title": "West Causeway",
-          "audio": "assets/audios/en/angkor_wat_audio_2.mp3"
+          "audio": "audios/en/angkor_wat_audio_2.mp3"
         },
         "kh": {
           "title": "ផ្លូវដើរខាងលិច",
-          "audio": "assets/audios/km/west_causeway.mp3"
+          "audio": "assets/audio/km/west_causeway.mp3"
         },
         "fr": {
           "title": "Chaussée Ouest",
-          "audio": "assets/audios/fr/west_causeway.mp3"
+          "audio": "assets/audio/fr/west_causeway.mp3"
         }
       }
     },
@@ -44,11 +44,11 @@
       "id": "poi-003",
       "order": 3,
       "type": "gallery",
-      "image": "assets/images/audio_spot/angkor_wat_point_3.png",
+      "image": "images/audio_spot/angkor_wat_point_3.png",
       "guides": {
         "en": {
           "title": "Outer Gallery Bas-Reliefs",
-          "audio": "assets/audios/en/angkor_wat_audio_3.mp3"
+          "audio": "audios/en/angkor_wat_audio_3.mp3"
         },
         "kh": {
           "title": "សិល្បៈលើជញ្ជាំងខាងក្រៅ",
@@ -64,19 +64,19 @@
       "id": "poi-004",
       "order": 4,
       "type": "gallery",
-      "image": "assets/images/audio_spot/angkor_wat_point_4.png",
+      "image": "images/audio_spot/angkor_wat_point_4.png",
       "guides": {
         "en": {
           "title": "Churning of the Ocean of Milk",
-          "audio": "assets/audios/en/angkor_wat_audio_4.mp3"
+          "audio": "audios/en/angkor_wat_audio_4.mp3"
         },
         "kh": {
           "title": "ការច្របល់ទឹកដោះគោ",
-          "audio": "assets/audios/km/churning_ocean.mp3"
+          "audio": "assets/audio/km/churning_ocean.mp3"
         },
         "fr": {
           "title": "Barattage de l’océan de lait",
-          "audio": "assets/audios/fr/churning_ocean.mp3"
+          "audio": "assets/audio/fr/churning_ocean.mp3"
         }
       }
     },
@@ -84,19 +84,19 @@
       "id": "poi-005",
       "order": 5,
       "type": "gallery",
-      "image": "assets/images/audio_spot/angkor_wat_point_5.png",
+      "image": "images/audio_spot/angkor_wat_point_5.png",
       "guides": {
         "en": {
           "title": "Library Buildings",
-          "audio": "assets/audios/en/angkor_wat_audio_5.mp3"
+          "audio": "audios/en/angkor_wat_audio_5.mp3"
         },
         "kh": {
           "title": "អគារបណ្ណាល័យ",
-          "audio": "assets/audios/km/library.mp3"
+          "audio": "assets/audio/km/library.mp3"
         },
         "fr": {
           "title": "Bibliothèques",
-          "audio": "assets/audios/fr/library.mp3"
+          "audio": "assets/audio/fr/library.mp3"
         }
       }
     },
@@ -104,19 +104,19 @@
       "id": "poi-006",
       "order": 6,
       "type": "gallery",
-      "image": "assets/images/audio_spot/angkor_wat_point_6.png",
+      "image": "images/audio_spot/angkor_wat_point_6.png",
       "guides": {
         "en": {
           "title": "Inner Courtyard",
-          "audio": "assets/audios/en/angkor_wat_audio_6.mp3"
+          "audio": "audios/en/angkor_wat_audio_6.mp3"
         },
         "kh": {
           "title": "ទីធ្លាខាងក្នុង",
-          "audio": "assets/audios/km/inner_courtyard.mp3"
+          "audio": "assets/audio/km/inner_courtyard.mp3"
         },
         "fr": {
           "title": "Cour intérieure",
-          "audio": "assets/audios/fr/inner_courtyard.mp3"
+          "audio": "assets/audio/fr/inner_courtyard.mp3"
         }
       }
     },
@@ -124,19 +124,19 @@
       "id": "poi-007",
       "order": 7,
       "type": "tower",
-      "image": "assets/images/audio_spot/angkor_wat_point_7.png",
+      "image": "images/audio_spot/angkor_wat_point_7.png",
       "guides": {
         "en": {
           "title": "Central Sanctuary (Bakan)",
-          "audio": "assets/audios/en/angkor_wat_audio_7.mp3"
+          "audio": "audios/en/angkor_wat_audio_7.mp3"
         },
         "kh": {
           "title": "ប្រាសាទកណ្ដាល",
-          "audio": "assets/audios/km/central_sanctuary.mp3"
+          "audio": "assets/audio/km/central_sanctuary.mp3"
         },
         "fr": {
           "title": "Sanctuaire central",
-          "audio": "assets/audios/fr/central_sanctuary.mp3"
+          "audio": "assets/audio/fr/central_sanctuary.mp3"
         }
       }
     },
@@ -144,19 +144,19 @@
       "id": "poi-008",
       "order": 8,
       "type": "gallery",
-      "image": "assets/images/audio_spot/angkor_wat_point_8.png",
+      "image": "images/audio_spot/angkor_wat_point_8.png",
       "guides": {
         "en": {
           "title": "Architecture & Engineering",
-          "audio": "assets/audios/en/angkor_wat_audio_8.mp3"
+          "audio": "audios/en/angkor_wat_audio_8.mp3"
         },
         "kh": {
           "title": "ស្ថាបត្យកម្ម និង វិស្វកម្ម",
-          "audio": "assets/audios/km/architecture.mp3"
+          "audio": "assets/audio/km/architecture.mp3"
         },
         "fr": {
           "title": "Architecture et ingénierie",
-          "audio": "assets/audios/fr/architecture.mp3"
+          "audio": "assets/audio/fr/architecture.mp3"
         }
       }
     },
@@ -164,19 +164,19 @@
       "id": "poi-009",
       "order": 9,
       "type": "gallery",
-      "image": "assets/images/audio_spot/angkor_wat_point_9.png",
+      "image": "images/audio_spot/angkor_wat_point_9.png",
       "guides": {
         "en": {
           "title": "Transformation to Buddhism",
-          "audio": "assets/audios/en/angkor_wat_audio_9.mp3"
+          "audio": "audios/en/angkor_wat_audio_9.mp3"
         },
         "kh": {
           "title": "ការប្រែប្រួលទៅព្រះពុទ្ធសាសនា",
-          "audio": "assets/audios/km/buddhist_transformation.mp3"
+          "audio": "assets/audio/km/buddhist_transformation.mp3"
         },
         "fr": {
           "title": "Transformation bouddhiste",
-          "audio": "assets/audios/fr/buddhist_transformation.mp3"
+          "audio": "assets/audio/fr/buddhist_transformation.mp3"
         }
       }
     },
@@ -184,19 +184,19 @@
       "id": "poi-010",
       "order": 10,
       "type": "exit",
-      "image": "assets/images/audio_spot/angkor_wat_point_10.png",
+      "image": "images/audio_spot/angkor_wat_point_10.png",
       "guides": {
         "en": {
           "title": "Angkor Wat Today & Preservation",
-          "audio": "assets/audios/en/angkor_wat_audio_10.mp3"
+          "audio": "audios/en/angkor_wat_audio_10.mp3"
         },
         "kh": {
           "title": "ការអភិរក្សអង្គរវត្តសព្វថ្ងៃ",
-          "audio": "assets/audios/km/preservation.mp3"
+          "audio": "assets/audio/km/preservation.mp3"
         },
         "fr": {
           "title": "Angkor Wat aujourd’hui et conservation",
-          "audio": "assets/audios/fr/preservation.mp3"
+          "audio": "assets/audio/fr/preservation.mp3"
         }
       }
     }

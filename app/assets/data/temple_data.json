@@ -2,23 +2,47 @@
   "temples": [
     {
       "id": "t1",
-      "name": "Angkor Wat",
+      "name": {
+        "en": "Angkor Wat",
+        "km": "អង្គរវត្ត",
+        "fr": "Angkor Vat"
+      },
+      "description": {
+        "en": "Largest religious monument in the world",
+        "km": "ប្រាសាទធំបំផុតនៅលើពិភពលោក",
+        "fr": "Le plus grand monument religieux du monde"
+      },
       "image": "images/monk_angkor_wat.png",
-      "description": "Largest religious monument in the world",
       "pointsOfInterest": []
     },
     {
       "id": "t2",
-      "name": "Angkor Wat",
+      "name": {
+        "en": "Angkor Wat",
+        "km": "អង្គរវត្ត",
+        "fr": "Angkor Vat"
+      },
+      "description": {
+        "en": "Ancient temple complex in Cambodia",
+        "km": "បរិវេណប្រាសាទបុរាណនៅកម្ពុជា",
+        "fr": "Complexe de temples anciens au Cambodge"
+      },
       "image": "images/back_angkor_wat.png",
-      "description": "Largest religious monument in the world",
       "pointsOfInterest": []
     },
         {
       "id": "t3",
-      "name": "Angkor Wat Sculpture",
+      "name": {
+        "en": "Angkor Wat Sculpture",
+        "km": "អង្គរវត្ត",
+        "fr": "Angkor Vat"
+      },
+      "description": {
+        "en": "Ancient temple complex in Cambodia",
+        "km": "បរិវេណប្រាសាទបុរាណនៅកម្ពុជា",
+        "fr": "Complexe de temples anciens au Cambodge"
+      },
       "image": "images/sculpture.png",
-      "description": "Largest religious monument in the world",
       "pointsOfInterest": []
     }
   ]
