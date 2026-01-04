@@ -43,15 +43,15 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentLanguage = context.watch<LanguageProvider>().current;
+    final language = context.watch<LanguageProvider>().current;
     return Scaffold(
       backgroundColor: const Color(0xFFFDF8F5),
       drawer: DrawerBar(
-        homeLabel: LanguageService().getHomeLabel(currentLanguage),
-        audioLabel: LanguageService().getAudioGuideLabel(currentLanguage),
-        mapLabel: LanguageService().getMapLabel(currentLanguage),
-        favoriteLabel: LanguageService().getFavoriteLabel(currentLanguage),
-        settingLabel: LanguageService().getSettingLabel(currentLanguage),
+        homeLabel: LanguageService().getHomeLabel(language),
+        audioLabel: LanguageService().getAudioGuideLabel(language),
+        mapLabel: LanguageService().getMapLabel(language),
+        favoriteLabel: LanguageService().getFavoriteLabel(language),
+        settingLabel: LanguageService().getSettingLabel(language),
       ),
       appBar: AppBar(
         title: const Text('Angkor Guide'),
@@ -74,7 +74,7 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
           children: [
             const SizedBox(height: 8),
             Text(
-              '${spots.length} destinations',
+              '${spots.length} ${LanguageService().getDestinationLabel(language)}',
               style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
@@ -87,7 +87,7 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
                 itemBuilder: (context, index) {
                   final poi = spots[index];
                   final guide =
-                      poi.guides[currentLanguage] ??
+                      poi.guides[language] ??
                       poi.guides[Language.en];
 
                   if (guide == null) {
@@ -104,7 +104,7 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
                         MaterialPageRoute(
                           builder: (_) => AudioGuidePlayerScreen(
                             points: spots,
-                            lanuage: currentLanguage,
+                            lanuage: language,
                             startIndex: index,
                           ),
                         ),

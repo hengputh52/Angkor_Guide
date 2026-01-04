@@ -1,5 +1,6 @@
 import 'package:app/model/language.dart';
 import 'package:app/model/user.dart';
+import 'package:flutter/cupertino.dart';
 
 class LanguageService {
   String _currentLanague = 'en';
@@ -8,11 +9,6 @@ class LanguageService {
   void changeLanague(String code)
   {
     _currentLanague = code;
-  }
-
-  String getText(Map<String, String> localizedText)
-  {
-    return localizedText[_currentLanague] ?? localizedText['en'] ?? '';
   }
 
   String getWelcomeText(Language language, User? user) {
@@ -183,6 +179,31 @@ class LanguageService {
         return 'ឈ្មោះមិនអាចទទេបានទេ';
       case Language.fr:
         return 'Le nom ne peut pas être vide';
+    }
+  }
+
+  String getMapDescription(Language language) {
+    switch (language) {
+      case Language.en:
+        return 'Angkor Wat is designed to represent the Hindu universe. The temple is built in a balanced, symmetrical layout, with structures arranged from the outer area toward the central towers. '
+            'This map shows how visitors move from the outer world toward the spiritual center of the temple.';
+      case Language.kh:
+        return 'ប្រាសាទអង្គរវត្តត្រូវបានរចនាឡើងដើម្បីតំណាងឱ្យពិភពលោកសាសនាហិណ្ឌូ។ ប្រាសាទនេះមានប្លង់សមស្រប និងសមមូល ដោយសំណង់ត្រូវបានរៀបចំចេញពីតំបន់ខាងក្រៅទៅកាន់ប៉មកណ្តាល។ '
+            'ផែនទីនេះបង្ហាញពីវិធីដែលភ្ញៀវទេសចរធ្វើដំណើរចេញពីពិភពក្រៅទៅកាន់មជ្ឈមណ្ឌលសាសនានៃប្រាសាទ។';
+      case Language.fr:
+        return 'Angkor Wat est conçu pour représenter l\'univers hindou. Le temple est construit selon un plan équilibré et symétrique, avec des structures disposées de la périphérie vers les tours centrales. '
+            'Cette carte montre comment les visiteurs se déplacent du monde extérieur vers le centre spirituel du temple.';
+    }
+  }
+
+  String getDestinationLabel(Language language) {
+    switch (language) {
+      case Language.en:
+        return 'Destination';
+      case Language.kh:
+        return 'គោលដៅ';
+      case Language.fr:
+        return 'Destination';
     }
   }
 

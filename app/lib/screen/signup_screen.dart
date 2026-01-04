@@ -131,8 +131,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 // 🔹 Form Section + Continue Button as one child
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: FadeSlideAnimation(
-                    beginOffset: Offset(0, 0.4),
+                  child: FadeSlide(
+                    begin: Offset(0, 0.4),
                     child: 
                   Form(
                     key: _formkey,

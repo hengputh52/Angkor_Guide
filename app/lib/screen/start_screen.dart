@@ -116,7 +116,7 @@ class _StartScreenState extends State<StartScreen> {
             right: 20,
             child: SizedBox(
               height: 55,
-              child: FadeSlideAnimation(
+              child: FadeSlide(
                 child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,

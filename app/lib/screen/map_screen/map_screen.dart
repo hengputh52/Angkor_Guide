@@ -1,11 +1,18 @@
+import 'package:app/services/language_provide.dart';
+import 'package:app/services/language_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app/widget/map/temple_map_viewer.dart';
+import 'package:provider/provider.dart';
+
+String imagePath = 'assets/images/Map_angkor_wat.png';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+      final language = context.watch<LanguageProvider>().current;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -31,28 +38,22 @@ class MapScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Description Text
-            const Text(
-              'Angkor Wat is designed to represent the Hindu universe. The temple is built in a balanced, symmetrical layout, with structures arranged from the outer area toward the central towers.',
-              style: TextStyle(
-                fontSize: 16,
-                height: 1.5,
-                color: Colors.black87,
-              ),
+            TempleMapViewer(
+              imagePath: imagePath,
             ),
-            const SizedBox(height: 12),
-            const Text(
-              'This map shows how visitors move from the outer world toward the spiritual center of the temple.',
-              style: TextStyle(
-                fontSize: 16,
-                height: 1.5,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 24),
             
-            const TempleMapViewer(
-              imagePath: 'assets/images/Map_angkor_wat.png',
+            const SizedBox(height: 34),
+            
+            Text(LanguageService().getMapDescription(language), 
+              style: TextStyle(
+                fontSize: 16,
+                height: 1.5,
+                color: Colors.black87,
+              ),
             ),
+            
+            
+            
           ],
         ),
       ),
