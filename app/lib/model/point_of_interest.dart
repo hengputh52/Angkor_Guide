@@ -24,7 +24,7 @@ class PointOfInterest {
     // Only parse guides if it exists and is a map
     if (json['guides'] != null && json['guides'] is Map<String, dynamic>) {
       (json['guides'] as Map<String, dynamic>).forEach((lang, value) {
-        guides[Language.values.byName(lang)] = AudioGuide.fromJson(lang, value);
+        guides[Language.values.byName(lang)] = AudioGuide.fromJson(value);
       });
     }
 
