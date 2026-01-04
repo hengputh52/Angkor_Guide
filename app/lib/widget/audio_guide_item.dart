@@ -42,7 +42,7 @@ class AudioGuideItem extends StatelessWidget {
         ),
         title: Text(title),
         //subtitle: Text(type.toUpperCase()),
-        trailing: const Icon(Icons.favorite),
+        trailing: const Icon(Icons.play_circle),
         onTap: onTap,
       ),
     );

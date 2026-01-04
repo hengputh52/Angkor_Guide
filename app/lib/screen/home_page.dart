@@ -2,6 +2,7 @@ import 'package:app/model/language.dart';
 import 'package:app/model/temple.dart';
 import 'package:app/model/user.dart';
 import 'package:app/screen/audio_screen/audio_guide_screen.dart';
+import 'package:app/screen/map_screen/map_screen.dart';
 import 'package:app/services/json_loader.dart';
 import 'package:app/services/language_provide.dart';
 import 'package:app/services/language_service.dart';
@@ -62,6 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
       );
   }
 
+
+  void onMapPressed(){
+    Navigator.push(
+      context,
+       MaterialPageRoute(builder: (context) => const MapScreen()),
+    );
+  }
   void onClickTemple(Temple temple)
   {
     Navigator.push(
@@ -109,22 +117,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const SizedBox(height: 20),
 
-              // // 🔹 Search Bar
-              // TextField(
-              //   decoration: InputDecoration(
-              //     hintText: 'What are you looking for?',
-              //     prefixIcon: const Icon(Icons.search),
-              //     contentPadding: const EdgeInsets.symmetric(vertical: 14),
-              //     border: OutlineInputBorder(
-              //       borderRadius: BorderRadius.circular(30),
-              //       borderSide: BorderSide(color: Colors.grey.shade300),
-              //     ),
-              //     enabledBorder: OutlineInputBorder(
-              //       borderRadius: BorderRadius.circular(30),
-              //       borderSide: BorderSide(color: Colors.grey.shade300),
-              //     ),
-              //   ),
-              // ),
+              // 🔹 Search Bar
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'What are you looking for?',
+                  prefixIcon: const Icon(Icons.search),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                ),
+              ),
 
               const SizedBox(height: 16),
 
@@ -140,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ActionChipButton(
                     icon: Icons.map_outlined,
                     label: LanguageService().getMapLabel(language),
-                    onTap: () {},
+                    onTap: onMapPressed,
                   ),
                 ],
               ),
