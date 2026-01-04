@@ -10,7 +10,7 @@
           "title": "Main Entrance (West Gate)",
           "audio": "audios/en/angkor_wat_audio_1.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ច្រកចូលខាងលិច",
           "audio": "assets/audio/km/main_entrance.mp3"
         },
@@ -30,7 +30,7 @@
           "title": "West Causeway",
           "audio": "audios/en/angkor_wat_audio_2.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ផ្លូវដើរខាងលិច",
           "audio": "assets/audio/km/west_causeway.mp3"
         },
@@ -50,7 +50,7 @@
           "title": "Outer Gallery Bas-Reliefs",
           "audio": "audios/en/angkor_wat_audio_3.mp3"
         },
-        "km": {
+        "kh": {
           "title": "សិល្បៈលើជញ្ជាំងខាងក្រៅ",
           "audio": "assets/audio/km/outer_gallery.mp3"
         },
@@ -70,7 +70,7 @@
           "title": "Churning of the Ocean of Milk",
           "audio": "audios/en/angkor_wat_audio_4.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ការច្របល់ទឹកដោះគោ",
           "audio": "assets/audio/km/churning_ocean.mp3"
         },
@@ -90,7 +90,7 @@
           "title": "Library Buildings",
           "audio": "audios/en/angkor_wat_audio_5.mp3"
         },
-        "km": {
+        "kh": {
           "title": "អគារបណ្ណាល័យ",
           "audio": "assets/audio/km/library.mp3"
         },
@@ -110,7 +110,7 @@
           "title": "Inner Courtyard",
           "audio": "audios/en/angkor_wat_audio_6.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ទីធ្លាខាងក្នុង",
           "audio": "assets/audio/km/inner_courtyard.mp3"
         },
@@ -130,7 +130,7 @@
           "title": "Central Sanctuary (Bakan)",
           "audio": "audios/en/angkor_wat_audio_7.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ប្រាសាទកណ្ដាល",
           "audio": "assets/audio/km/central_sanctuary.mp3"
         },
@@ -150,7 +150,7 @@
           "title": "Architecture & Engineering",
           "audio": "audios/en/angkor_wat_audio_8.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ស្ថាបត្យកម្ម និង វិស្វកម្ម",
           "audio": "assets/audio/km/architecture.mp3"
         },
@@ -170,7 +170,7 @@
           "title": "Transformation to Buddhism",
           "audio": "audios/en/angkor_wat_audio_9.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ការប្រែប្រួលទៅព្រះពុទ្ធសាសនា",
           "audio": "assets/audio/km/buddhist_transformation.mp3"
         },
@@ -190,7 +190,7 @@
           "title": "Angkor Wat Today & Preservation",
           "audio": "audios/en/angkor_wat_audio_10.mp3"
         },
-        "km": {
+        "kh": {
           "title": "ការអភិរក្សអង្គរវត្តសព្វថ្ងៃ",
           "audio": "assets/audio/km/preservation.mp3"
         },

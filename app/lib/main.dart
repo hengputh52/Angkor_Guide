@@ -1,10 +1,24 @@
 import 'package:app/screen/start_screen.dart';
+import 'package:app/services/language_provide.dart';
+import 'package:app/services/user_service.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final languageProvider = LanguageProvider();
+  await languageProvider.load();
+
+  runApp(
+    ChangeNotifierProvider.value(
+      value: languageProvider,
+      child: const MyApp(),
+    ),
+  );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

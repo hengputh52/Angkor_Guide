@@ -3,7 +3,12 @@ import 'package:app/screen/home_page.dart';
 import 'package:flutter/material.dart';
 
 class DrawerBar extends StatelessWidget {
-  const DrawerBar({super.key});
+  const DrawerBar({super.key, required this.homeLabel, required this.audioLabel, required this.mapLabel, required this.favoriteLabel, required this.settingLabel});
+  final String homeLabel;
+  final String audioLabel;
+  final String mapLabel;
+  final String favoriteLabel;
+  final String settingLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -32,31 +37,31 @@ class DrawerBar extends StatelessWidget {
           const SizedBox(height: 50),
           _IconFeature(
             icon: Icons.home,
-            title: 'Home', 
+            title: homeLabel, 
             onTap: onHome
           ),
 
           _IconFeature(
             icon: Icons.headphones,
-            title: 'Audio', 
+            title: audioLabel, 
             onTap: onAudio
           ),
 
           _IconFeature(
             icon: Icons.map,
-            title: 'Map', 
+            title: mapLabel, 
             onTap: (){}
           ),
 
           _IconFeature(
             icon: Icons.favorite,
-            title: 'Favuorite', 
+            title: favoriteLabel, 
             onTap: (){}
           ),
 
           _IconFeature(
             icon: Icons.settings,
-            title: 'Setting', 
+            title: settingLabel, 
             onTap: (){}
           ),
 

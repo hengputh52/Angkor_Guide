@@ -13,8 +13,8 @@ class User{
   {
     return User(
       userId: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName']
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'] ?? ''
       );
   }
 

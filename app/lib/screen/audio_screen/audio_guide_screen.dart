@@ -1,12 +1,18 @@
+import 'package:app/model/language.dart';
 import 'package:app/screen/audio_screen/audio_guide_list_screen.dart';
+import 'package:app/services/language_provide.dart';
+import 'package:app/services/language_service.dart';
 import 'package:app/widget/drawer_bar.dart';
+import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AudioGuideScreen extends StatelessWidget {
   const AudioGuideScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+  final language = context.watch<LanguageProvider>().current;
 
   void onStart()
     {
@@ -16,7 +22,13 @@ class AudioGuideScreen extends StatelessWidget {
         );
     }
     return Scaffold(
-      drawer: DrawerBar(),
+      drawer: DrawerBar(
+        homeLabel: LanguageService().getHomeLabel(language),
+        audioLabel: LanguageService().getAudioGuideLabel(language),
+        mapLabel: LanguageService().getMapLabel(language),
+        favoriteLabel: LanguageService().getFavoriteLabel(language),
+        settingLabel: LanguageService().getSettingLabel(language)
+        ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -28,6 +40,16 @@ class AudioGuideScreen extends StatelessWidget {
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
+          actions: [
+            LanguageSwitchButton(onLanguageChanged: (code) {
+            final lang = Language.values.firstWhere(
+              (e) => e.code == code, orElse: () => Language.en 
+            );
+            context.read<LanguageProvider>().set(lang);
+          }
+          ),
+          const SizedBox(width: 20)
+          ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -50,11 +72,7 @@ class AudioGuideScreen extends StatelessWidget {
                 // 🔹 Description Text
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    'Angkor Wat is a Hindu-Buddhist complex in Cambodia. '
-                    'Located on a site measuring 162.6 hectares within the ancient '
-                    'Khmer capital city of Angkor, it was originally constructed '
-                    'in 1150 CE as a Hindu temple dedicated to the deity Vishnu.',
+                  child: Text(LanguageService().getAuidoScreenDescription(language),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -81,8 +99,8 @@ class AudioGuideScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(0),
                         ),
                       ),
-                      child: const Text(
-                        'Start Listening Now',
+                      child: Text(
+                        LanguageService().getStartListeninglabel(language),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
