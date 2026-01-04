@@ -10,11 +10,6 @@ class LanguageService {
     _currentLanague = code;
   }
 
-  String getText(Map<String, String> localizedText)
-  {
-    return localizedText[_currentLanague] ?? localizedText['en'] ?? '';
-  }
-
   String getWelcomeText(Language language, User? user) {
     switch (language) {
       case Language.en:
