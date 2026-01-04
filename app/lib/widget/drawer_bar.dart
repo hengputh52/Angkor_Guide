@@ -1,4 +1,5 @@
 import 'package:app/screen/audio_screen/audio_guide_screen.dart';
+import 'package:app/screen/favorite_screen/favorite_screen.dart';
 import 'package:app/screen/home_page.dart';
 import 'package:app/screen/map_screen/map_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,13 @@ class DrawerBar extends StatelessWidget {
           context,
            MaterialPageRoute(builder: (context) => const MapScreen())
       ); 
+    }
+    void onFavorite(){
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder:  (context) => const FavoriteScreen())
+        );
     }
     return Drawer(
       backgroundColor: Colors.white,
@@ -78,8 +86,6 @@ class DrawerBar extends StatelessWidget {
     );
   }
 }
-
-
 
 class _IconFeature extends StatelessWidget{
   final IconData icon;

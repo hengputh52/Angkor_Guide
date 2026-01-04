@@ -67,7 +67,6 @@ class _TempleMapViewerState extends State<TempleMapViewer> {
               ),
             ),
             
-            // Reset Zoom Button
             Positioned(
               top: 8,
               right: 8,
