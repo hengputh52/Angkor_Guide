@@ -1,5 +1,6 @@
 import 'package:app/screen/audio_screen/audio_guide_screen.dart';
 import 'package:app/screen/home_page.dart';
+import 'package:app/screen/map_screen/map_screen.dart';
 import 'package:flutter/material.dart';
 
 class DrawerBar extends StatelessWidget {
@@ -28,6 +29,13 @@ class DrawerBar extends StatelessWidget {
         MaterialPageRoute(builder: (context) => const AudioGuideScreen())
       );
     }
+
+    void onMapPressed(){
+        Navigator.push(
+          context,
+           MaterialPageRoute(builder: (context) => const MapScreen())
+      ); 
+    }
     return Drawer(
       backgroundColor: Colors.white,
       child: ListView(
@@ -50,7 +58,7 @@ class DrawerBar extends StatelessWidget {
           _IconFeature(
             icon: Icons.map,
             title: mapLabel, 
-            onTap: (){}
+            onTap: onMapPressed,
           ),
 
           _IconFeature(

@@ -1,6 +1,9 @@
 import 'package:app/model/language.dart';
 import 'package:app/model/user.dart';
 
+import 'package:app/model/language.dart';
+import 'package:app/model/user.dart';
+
 class LanguageService {
   String _currentLanague = 'en';
   String get currentLanague => _currentLanague;

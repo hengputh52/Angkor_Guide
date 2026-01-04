@@ -16,7 +16,7 @@ class _StartScreenState extends State<StartScreen> {
   @override
   void initState() {
     super.initState();
-    _videoController = VideoPlayerController.network(
+    _videoController = VideoPlayerController.asset(
       'assets/videos/angkor_wat_video_start.mp4',
     )
       ..setLooping(true)

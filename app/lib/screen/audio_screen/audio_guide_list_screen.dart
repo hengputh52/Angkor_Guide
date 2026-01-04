@@ -10,7 +10,7 @@ import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-final spotListPath = 'data/point_of_interest.json';
+final spotListPath = 'assets/data/point_of_interest.json';
 
 class AudioGuideListScreen extends StatefulWidget {
   const AudioGuideListScreen({super.key});
