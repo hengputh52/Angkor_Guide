@@ -1,10 +1,14 @@
+import 'package:app/model/language.dart';
 import 'package:app/model/user.dart';
 import 'package:app/screen/home_page.dart';
+import 'package:app/services/language_provide.dart';
+import 'package:app/services/language_service.dart';
 import 'package:app/widget/animations/fade_slide_animation.dart';
 import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
 import 'package:app/services/user_service.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -40,24 +44,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim()
       );
-      await UserService.writeUserToPrefs(user);
+      await UserService.saveUser(user);
       Navigator.of(context).pushReplacement(
               FlowPageRoute(page: const HomeScreen()),
             );
     }
   }
 
-  String? validateName(String? value)
-  {
-    if(value == null || value.isEmpty)
-    {
-      return 'Name cannot be empty';
-    }
-    return null;
+  String? validateName(String? value) {
+    final language = context.read<LanguageProvider>().current;
+  if (value == null || value.isEmpty) {
+    return LanguageService().getValidateMessage(language);
   }
+  return null;
+}
+
+  
   
   @override
   Widget build(BuildContext context) {
+    final language = context.watch<LanguageProvider>().current;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -110,9 +116,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       
                       LanguageSwitchButton(
-                        onLanguageChanged: (lang)
+                        onLanguageChanged: (code)
                         {
-
+                          final lang = Language.values.firstWhere(
+                            (e) => e.code == code, orElse: () => Language.en,
+                          );
+                          context.read<LanguageProvider>().set(lang);
                         })
                     ],
                   ),
@@ -130,8 +139,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Full Name',
+                        Text(
+                          LanguageService().getFirstNameLabel(language),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -144,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             style: TextStyle(color: Colors.white),
                             controller: _firstNameController,
                             decoration: InputDecoration(
-                              hintText: 'Enter your name',
+                              hintText: LanguageService().getHintTextFirstName(language),
                               
                               hintStyle: TextStyle(color: const Color.fromARGB(255, 229, 224, 224)),
                               contentPadding: const EdgeInsets.symmetric(
@@ -171,12 +180,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         const SizedBox(height: 30),
+
+                         Text(
+                            LanguageService().getHintTextLastName(language),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
                         TextFormField(
                             validator: validateName,
                             style: TextStyle(color: Colors.white),
                             controller: _lastNameController,
                             decoration: InputDecoration(
-                              hintText: 'Enter your name',
+                              hintText: LanguageService().getHintTextLastName(language),
                               
                               hintStyle: TextStyle(color: const Color.fromARGB(255, 229, 224, 224)),
                               contentPadding: const EdgeInsets.symmetric(
@@ -219,8 +239,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             onPressed: onContinue,
                             
-                            child: const Text(
-                              'Continue',
+                            child: Text(
+                              LanguageService().getContinueButtonLabel(language),
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black,

@@ -1,11 +1,17 @@
+import 'package:app/model/language.dart';
 import 'package:app/model/temple.dart';
+import 'package:app/model/user.dart';
 import 'package:app/screen/audio_screen/audio_guide_screen.dart';
 import 'package:app/services/json_loader.dart';
+import 'package:app/services/language_provide.dart';
+import 'package:app/services/language_service.dart';
+import 'package:app/services/user_service.dart';
 import 'package:app/widget/action_button.dart';
 import 'package:app/widget/drawer_bar.dart';
 import 'package:app/widget/explore_card.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 final String templeFilePath = 'assets/data/temple_data.json';
 
@@ -18,12 +24,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Temple> temples = [];
+  
+
+  User? currentUser;
 
     @override 
   void initState()
   {
     super.initState();
     loadTemples();
+    loadUser();
   }
 
   Future <void> loadTemples() async 
@@ -33,6 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     setState(() {
       temples = templeList.map((e) => Temple.fromJson(e)).toList();
+    });
+  }
+
+  Future <void> loadUser() async
+  {
+    final user = await UserService.getUser();
+    setState(() {
+      currentUser = user;
     });
   }
 
@@ -55,12 +73,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = context.watch<LanguageProvider>().current;
+    
+ 
     return Scaffold(
-      drawer: DrawerBar(),
+      drawer: DrawerBar(
+        homeLabel: LanguageService().getHomeLabel(language),
+        audioLabel: LanguageService().getAudioGuideLabel(language),
+        mapLabel: LanguageService().getMapLabel(language),
+        favoriteLabel: LanguageService().getFavoriteLabel(language),
+        settingLabel: LanguageService().getSettingLabel(language)
+        ),
       appBar: AppBar(
-        title: Text('Angkor Guide'),
+        title: Text(LanguageService().getWelcomeText(language, currentUser)),
+        
         actions: [
-          LanguageSwitchButton(onLanguageChanged: (lang) {}),
+          LanguageSwitchButton(onLanguageChanged: (code) {
+            final lang = Language.values.firstWhere(
+              (e) => e.code == code, orElse: () => Language.en 
+            );
+            context.read<LanguageProvider>().set(lang);
+          }
+          ),
           const SizedBox(width: 20)
           ],
         ),
@@ -75,22 +109,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const SizedBox(height: 20),
 
-              // 🔹 Search Bar
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'What are you looking for?',
-                  prefixIcon: const Icon(Icons.search),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                ),
-              ),
+              // // 🔹 Search Bar
+              // TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'What are you looking for?',
+              //     prefixIcon: const Icon(Icons.search),
+              //     contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(30),
+              //       borderSide: BorderSide(color: Colors.grey.shade300),
+              //     ),
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(30),
+              //       borderSide: BorderSide(color: Colors.grey.shade300),
+              //     ),
+              //   ),
+              // ),
 
               const SizedBox(height: 16),
 
@@ -99,13 +133,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   ActionChipButton(
                     icon: Icons.headphones,
-                    label: 'Audio Guide',
+                    label: LanguageService().getAudioGuideLabel(language),
                     onTap: onAudio,
                   ),
                   const SizedBox(width: 12),
                   ActionChipButton(
                     icon: Icons.map_outlined,
-                    label: 'Map',
+                    label: LanguageService().getMapLabel(language),
                     onTap: () {},
                   ),
                 ],
@@ -120,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.only(bottom: 20),
                   child: ExploreCard(
                     image: temple.image,
-                    title: temple.name,
+                    title: temple.getName(language),
                     onTap: () => onClickTemple(temple),
                     ),
                 )
