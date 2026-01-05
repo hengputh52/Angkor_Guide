@@ -95,6 +95,7 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
                   }
 
                   return AudioGuideItem(
+                    poiId: poi.id,
                     number: index + 1,
                     title: guide.title,
                     imagePath: poi.image,
