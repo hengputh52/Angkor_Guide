@@ -72,7 +72,7 @@ class DrawerBar extends StatelessWidget {
           _IconFeature(
             icon: Icons.favorite,
             title: favoriteLabel, 
-            onTap: (){}
+            onTap: onFavorite,
           ),
 
           _IconFeature(
