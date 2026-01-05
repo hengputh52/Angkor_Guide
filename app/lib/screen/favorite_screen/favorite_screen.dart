@@ -1,3 +1,4 @@
+import 'package:app/services/language_provide.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   List<PointOfInterest> _allPois = [];
   bool _isLoading = true;
+  
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = context.watch<LanguageProvider>().current;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -103,7 +106,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               itemCount: favoritePois.length,
                               itemBuilder: (context, index) {
-                                return _buildFavoriteItem(favoritePois[index], index + 1);
+                                return _buildFavoriteItem(favoritePois[index], index + 1, language);
                               },
                             ),
                     ),
@@ -114,9 +117,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
-  Widget _buildFavoriteItem(PointOfInterest poi, int number) {
-    // Get title from English (default)
-    final title = poi.guides['en']?.title ?? 'Unknown';
+  Widget _buildFavoriteItem(PointOfInterest poi, int number, Language language) {
+    final title = poi.guides[language]?.title ?? poi.guides[Language.en]?.title ?? 'Unknown';
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
