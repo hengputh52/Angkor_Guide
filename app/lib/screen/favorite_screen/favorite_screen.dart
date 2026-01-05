@@ -1,12 +1,15 @@
-import 'package:app/services/language_provide.dart';
+
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbols.dart';
 import 'package:provider/provider.dart';
 import '../../model/point_of_interest.dart';
 import '../../model/language.dart';
 import '../../services/favorite_service.dart';
 import '../../services/json_loader.dart';
-import '../../widget/favorite/favorite_button.dart';
+import '../../services/language_provide.dart';
+import '../../services/language_service.dart';
+import '../../widget/audio_guide_item.dart';
+import '../../widget/drawer_bar.dart';
+import '../../widget/lanaguage/langauge_switch_button.dart';
 import '../audio_screen/audio_guide_player_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -32,6 +35,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       final data = await JsonLoader.load('assets/data/point_of_interest.json');
       final List<dynamic> poiList = data['pointsOfInterest'];
       final pois = poiList.map((json) => PointOfInterest.fromJson(json)).toList();
+      pois.sort((a, b) => a.order.compareTo(b.order));
 
       if (mounted) {
         setState(() {
@@ -50,24 +54,34 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     final language = context.watch<LanguageProvider>().current;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFDF8F5),
+      drawer: DrawerBar(
+        homeLabel: LanguageService().getHomeLabel(language),
+        audioLabel: LanguageService().getAudioGuideLabel(language),
+        mapLabel: LanguageService().getMapLabel(language),
+        favoriteLabel: LanguageService().getFavoriteLabel(language),
+        settingLabel: LanguageService().getSettingLabel(language),
+      ),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Audio Guide',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        title: Text(LanguageService().getFavoriteLabel(language)),
+        actions: [
+          LanguageSwitchButton(
+            onLanguageChanged: (code) {
+              final lang = Language.values.firstWhere(
+                (e) => e.code == code,
+                orElse: () => Language.en,
+              );
+              context.read<LanguageProvider>().set(lang);
+            },
           ),
-        ),
-        centerTitle: true,
+          const SizedBox(width: 16),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -77,120 +91,64 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     .where((poi) => favoriteService.isFavorite(poi.id))
                     .toList();
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: Text(
-                        'Favorite List',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(
+                        '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
+                        style: const TextStyle(
+                          fontSize: 16,
                           color: Colors.black54,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Text(
-                        '${favoritePois.length} destination${favoritePois.length != 1 ? 's' : ''}',
-                        style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: favoritePois.isEmpty
+                            ? _buildEmptyState(language)
+                            : ListView.builder(
+                                itemCount: favoritePois.length,
+                                itemBuilder: (context, index) {
+                                  final poi = favoritePois[index];
+                                  final guide = poi.guides[language] ??
+                                      poi.guides[Language.en];
+
+                                  if (guide == null) {
+                                    return const SizedBox.shrink();
+                                  }
+
+                                  return AudioGuideItem(
+                                    poiId: poi.id,
+                                    number: index + 1,
+                                    title: guide.title,
+                                    imagePath: poi.image,
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => AudioGuidePlayerScreen(
+                                            points: favoritePois,
+                                            lanuage: language,
+                                            startIndex: index,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                       ),
-                    ),
-                    Divider(color: Colors.grey.shade300, height: 1),
-                    Expanded(
-                      child: favoritePois.isEmpty
-                          ? _buildEmptyState()
-                          : ListView.builder(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              itemCount: favoritePois.length,
-                              itemBuilder: (context, index) {
-                                return _buildFavoriteItem(favoritePois[index], index + 1, language);
-                              },
-                            ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             ),
     );
   }
 
-  Widget _buildFavoriteItem(PointOfInterest poi, int number, Language language) {
-    final title = poi.guides[language]?.title ?? poi.guides[Language.en]?.title ?? 'Unknown';
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        children: [
-          // Image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              poi.image,
-              width: 70,
-              height: 50,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                width: 70,
-                height: 50,
-                color: Colors.grey.shade200,
-                child: const Icon(Icons.image, color: Colors.grey),
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-
-          // Title
-          Expanded(
-            child: Text(
-              '$number. $title',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-
-          // Bookmark Button
-          FavoriteButton(poiId: poi.id, size: 22),
-          const SizedBox(width: 8),
-
-          // Play Button
-          GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AudioGuidePlayerScreen(
-                  
-                  points: [_allPois.firstWhere((p) => p.id == poi.id)],
-                  lanuage: Language.en,
-                  startIndex: _allPois.indexOf(poi),
-                  ),
-              ),
-            ),
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black, width: 1.5),
-              ),
-              child: const Icon(Icons.play_arrow, size: 18, color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(Language language) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -199,7 +157,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           const SizedBox(height: 16),
           Text(
             'No favorites yet',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey.shade600),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey.shade600,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
