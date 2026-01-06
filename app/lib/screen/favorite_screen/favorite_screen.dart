@@ -1,12 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../model/point_of_interest.dart';
 import '../../model/language.dart';
+import '../../model/user.dart';
 import '../../services/favorite_service.dart';
 import '../../services/json_loader.dart';
 import '../../services/language_provide.dart';
 import '../../services/language_service.dart';
+import '../../services/user_service.dart';
 import '../../widget/audio_guide_item.dart';
 import '../../widget/drawer_bar.dart';
 import '../../widget/lanaguage/langauge_switch_button.dart';
@@ -22,15 +23,16 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   List<PointOfInterest> _allPois = [];
   bool _isLoading = true;
-  
+  User? currentUser;
 
   @override
   void initState() {
     super.initState();
-    _loadPois();
+    _loadUserAndPois();
   }
 
-  Future<void> _loadPois() async {
+  Future<void> _loadUserAndPois() async {
+    final user = await UserService.getUser();
     try {
       final data = await JsonLoader.load('assets/data/point_of_interest.json');
       final List<dynamic> poiList = data['pointsOfInterest'];
@@ -39,6 +41,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
       if (mounted) {
         setState(() {
+          currentUser = user;
           _allPois = pois;
           _isLoading = false;
         });
@@ -49,6 +52,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         setState(() => _isLoading = false);
       }
     }
+  }
+
+  Future<List<PointOfInterest>> _getFavoritePois(FavoriteService favoriteService) async {
+    final favs = await favoriteService.getFavorites();
+    final favIds = favs.map((f) => f.poiId).toSet();
+    return _allPois.where((poi) => favIds.contains(poi.id)).toList();
   }
 
   @override
@@ -87,61 +96,66 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Consumer<FavoriteService>(
               builder: (context, favoriteService, child) {
-                final favoritePois = _allPois
-                    .where((poi) => favoriteService.isFavorite(poi.id))
-                    .toList();
+                return FutureBuilder<List<PointOfInterest>>(
+                  future: _getFavoritePois(favoriteService),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final favoritePois = snapshot.data!;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 8),
+                          Text(
+                            '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Expanded(
+                            child: favoritePois.isEmpty
+                                ? _buildEmptyState(language)
+                                : ListView.builder(
+                                    itemCount: favoritePois.length,
+                                    itemBuilder: (context, index) {
+                                      final poi = favoritePois[index];
+                                      final guide = poi.guides[language] ??
+                                          poi.guides[Language.en];
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 8),
-                      Text(
-                        '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Expanded(
-                        child: favoritePois.isEmpty
-                            ? _buildEmptyState(language)
-                            : ListView.builder(
-                                itemCount: favoritePois.length,
-                                itemBuilder: (context, index) {
-                                  final poi = favoritePois[index];
-                                  final guide = poi.guides[language] ??
-                                      poi.guides[Language.en];
+                                      if (guide == null) {
+                                        return const SizedBox.shrink();
+                                      }
 
-                                  if (guide == null) {
-                                    return const SizedBox.shrink();
-                                  }
-
-                                  return AudioGuideItem(
-                                    poiId: poi.id,
-                                    number: index + 1,
-                                    title: guide.title,
-                                    imagePath: poi.image,
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => AudioGuidePlayerScreen(
-                                            points: favoritePois,
-                                            lanuage: language,
-                                            startIndex: index,
-                                          ),
-                                        ),
+                                      return AudioGuideItem(
+                                        poiId: poi.id,
+                                        number: index + 1,
+                                        title: guide.title,
+                                        imagePath: poi.image,
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => AudioGuidePlayerScreen(
+                                                points: favoritePois,
+                                                lanuage: language,
+                                                startIndex: index,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       );
                                     },
-                                  );
-                                },
-                              ),
+                                  ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 );
               },
             ),

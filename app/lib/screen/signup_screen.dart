@@ -182,7 +182,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const SizedBox(height: 30),
 
                          Text(
-                            LanguageService().getHintTextLastName(language),
+                            LanguageService().getLastNameLabel(language),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,

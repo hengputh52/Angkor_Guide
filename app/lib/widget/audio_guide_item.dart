@@ -28,6 +28,7 @@ class AudioGuideItem extends StatelessWidget {
         border: Border(bottom: BorderSide(color: Colors.black12)),
       ),
       child: ListTile(
+        onTap: onTap,
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -53,13 +54,9 @@ class AudioGuideItem extends StatelessWidget {
             FavoriteButton(poiId: poiId, size: 22),
             const SizedBox(width: 4),
             // Play Button
-            IconButton(
-              onPressed: onTap,
-              icon: const Icon(Icons.play_circle, size: 28),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              splashRadius: 20,
-            ),
+            Icon(Icons.play_circle, size: 28),
+              
+            
           ],
         ),
       ),

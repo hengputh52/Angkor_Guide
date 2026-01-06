@@ -19,7 +19,7 @@ class FadeSlide extends StatelessWidget {
       builder: (context, offset, child) => Opacity(
         opacity: 1 - (offset).distance,
         child: Transform.translate(
-          offset: Offset(0, (offset as Offset).dy * 100),
+          offset: Offset(0, (offset).dy * 100),
           child: child,
         ),
       ),
