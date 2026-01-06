@@ -97,11 +97,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Consumer<FavoriteService>(
               builder: (context, favoriteService, child) {
-                final favoritePois = _allPois
-                    .where((poi) => favoriteService.isFavorite(poi.id))
-                    .toList();
+                return FutureBuilder<List<PointOfInterest>>(
+                  future: _getFavoritePois(favoriteService),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final favoritePois = snapshot.data ?? [];
 
-                return Padding(
+                    return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,6 +156,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       ),
                     ],
                   ),
+                );
+                  },
                 );
               },
             ),
