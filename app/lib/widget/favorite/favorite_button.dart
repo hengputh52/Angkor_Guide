@@ -23,7 +23,7 @@ class FavoriteButton extends StatelessWidget {
             return IconButton(
               icon: Icon(
                 isFavorite ? Icons.bookmark : Icons.bookmark_border,
-                color: Colors.black,
+                color: Colors.yellow,
                 size: size,
               ),
               padding: EdgeInsets.zero,
@@ -38,3 +38,4 @@ class FavoriteButton extends StatelessWidget {
     );
   }
 }
+

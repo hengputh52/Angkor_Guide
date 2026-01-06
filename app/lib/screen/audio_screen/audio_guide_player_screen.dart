@@ -90,15 +90,20 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
   @override
   Widget build(BuildContext context) {
     final poi = widget.points[currentIndex];
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
         title: Text(
           "Now Playing",
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -113,13 +118,13 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
                 width: 330,
                 height: 320,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: isDark ? Colors.grey[800] : Colors.grey[200],
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black12,
+                      color: isDark ? Colors.black26 : Colors.black12,
                       blurRadius: 16,
-                      offset: Offset(0, 8),
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -127,9 +132,9 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
                   borderRadius: BorderRadius.circular(10),
                   child: Image.asset(
                     poi.image,
-                   
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Icon(Icons.music_note, size: 80, color: Colors.grey),
+                    errorBuilder: (context, error, stackTrace) =>
+                        Icon(Icons.music_note, size: 80, color: Colors.grey),
                   ),
                 ),
               ),
@@ -137,8 +142,8 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
               // Title and Subtitle
               Text(
                 currentGuide.title,
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
@@ -161,7 +166,7 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
                 value: _position.inSeconds.clamp(0, _duration.inSeconds).toDouble(),
                 onChanged: (v) => _player.seek(Duration(seconds: v.toInt())),
                 activeColor: Colors.green,
-                inactiveColor: Colors.grey[300],
+                inactiveColor: isDark ? Colors.grey[700] : Colors.grey[300],
               ),
               // Time Row
               Row(
@@ -184,7 +189,7 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.skip_previous, size: 36),
-                    color: Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                     onPressed: _previous,
                   ),
                   const SizedBox(width: 16),
@@ -205,7 +210,7 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
                   const SizedBox(width: 16),
                   IconButton(
                     icon: const Icon(Icons.skip_next, size: 36),
-                    color: Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                     onPressed: _next,
                   ),
                 ],
@@ -215,9 +220,9 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Text(
-                    currentGuide.title, // Replace with description if available
-                    style: const TextStyle(
-                      color: Colors.black87,
+                    currentGuide.title,
+                    style: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black87,
                       fontSize: 16,
                       height: 1.6,
                     ),
@@ -232,5 +237,3 @@ class _AudioGuidePlayerScreenState extends State<AudioGuidePlayerScreen> {
     );
   }
 }
-
-

@@ -48,7 +48,15 @@ class ExploreCard extends StatelessWidget {
                 color: Colors.white.withOpacity(0.85),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(title),
+              child: 
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
             ),
           ),
       
@@ -75,7 +83,8 @@ class ExploreCard extends StatelessWidget {
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.arrow_outward),
+              child: Icon(Icons.arrow_outward, color: Colors.black),
+              
             ),
           ),
         ],

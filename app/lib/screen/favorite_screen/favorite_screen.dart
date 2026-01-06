@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../model/point_of_interest.dart';
@@ -64,9 +63,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     final language = context.watch<LanguageProvider>().current;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDF8F5),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: DrawerBar(
         homeLabel: LanguageService().getHomeLabel(language),
         audioLabel: LanguageService().getAudioGuideLabel(language),
@@ -75,11 +75,24 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         settingLabel: LanguageService().getSettingLabel(language),
       ),
       appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDark ? Colors.white : Colors.black,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(LanguageService().getFavoriteLabel(language)),
+        title: Text(
+          LanguageService().getFavoriteLabel(language),
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
         actions: [
           LanguageSwitchButton(
             onLanguageChanged: (code) {
@@ -113,15 +126,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       const SizedBox(height: 8),
                       Text(
                         '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
-                          color: Colors.black54,
+                          color: isDark ? Colors.white70 : Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 16),
                       Expanded(
                         child: favoritePois.isEmpty
-                            ? _buildEmptyState(language)
+                            ? _buildEmptyState(isDark)
                             : ListView.builder(
                                 itemCount: favoritePois.length,
                                 itemBuilder: (context, index) {
@@ -164,25 +177,32 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
-  Widget _buildEmptyState(Language language) {
+  Widget _buildEmptyState(bool isDark) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.bookmark_border, size: 64, color: Colors.grey.shade300),
+          Icon(
+            Icons.bookmark_border,
+            size: 64,
+            color: isDark ? Colors.grey[600] : Colors.grey.shade300,
+          ),
           const SizedBox(height: 16),
           Text(
             'No favorites yet',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+              color: isDark ? Colors.grey[400] : Colors.grey.shade600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Tap the bookmark icon to add favorites',
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+            style: TextStyle(
+              fontSize: 13,
+              color: isDark ? Colors.grey[500] : Colors.grey.shade500,
+            ),
           ),
         ],
       ),

@@ -2,11 +2,20 @@ import 'package:app/screen/audio_screen/audio_guide_screen.dart';
 import 'package:app/screen/favorite_screen/favorite_screen.dart';
 import 'package:app/screen/home_page.dart';
 import 'package:app/screen/map_screen/map_screen.dart';
+import 'package:app/screen/setting_screen/setting_screen.dart';
 import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:flutter/material.dart';
 
 class DrawerBar extends StatelessWidget {
-  const DrawerBar({super.key, required this.homeLabel, required this.audioLabel, required this.mapLabel, required this.favoriteLabel, required this.settingLabel});
+  const DrawerBar({
+    super.key,
+    required this.homeLabel,
+    required this.audioLabel,
+    required this.mapLabel,
+    required this.favoriteLabel,
+    required this.settingLabel,
+  });
+
   final String homeLabel;
   final String audioLabel;
   final String mapLabel;
@@ -16,35 +25,46 @@ class DrawerBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    void onHome()
-    {
+    void onHome() {
+      Navigator.pop(context);
       Navigator.push(
         context,
         FlowPageRoute(page:  const HomeScreen())
       );
     }
 
-    void onAudio()
-    {
+    void onAudio() {
+      Navigator.pop(context);
       Navigator.push(
         context,
         FlowPageRoute(page:  const AudioGuideScreen())
       );
     }
 
-    void onMapPressed(){
-        Navigator.push(
-          context,
-           FlowPageRoute(page:  const MapScreen())
-      ); 
+    void onMapPressed() {
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        FlowPageRoute(page:  const MapScreen())
+      );
     }
-    void onFavorite(){
+
+    void onFavorite() {
       Navigator.pop(context);
       Navigator.push(
         context,
         FlowPageRoute(page:  const FavoriteScreen())
         );
     }
+
+    void onSetting() {
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        FlowPageRoute(page:  const SettingScreen())
+        );
+    }
+
     return Drawer(
       shadowColor: Colors.white,
       child: Stack(
@@ -84,7 +104,7 @@ class DrawerBar extends StatelessWidget {
               _IconFeature(
                 icon: Icons.settings,
                 title: settingLabel, 
-                onTap: (){}
+                onTap: onSetting
               ),
             ],
           ),
@@ -94,17 +114,20 @@ class DrawerBar extends StatelessWidget {
   }
 }
 
-class _IconFeature extends StatelessWidget{
+class _IconFeature extends StatelessWidget {
   final IconData icon;
   final String title;
+  
   final VoidCallback onTap;
 
-  const _IconFeature({required this.icon, required this.title, required this.onTap});
-  
+  const _IconFeature({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    
     return SizedBox(
         height: 50,
         child: TextButton.icon(

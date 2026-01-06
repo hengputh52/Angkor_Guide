@@ -4,28 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:app/widget/map/temple_map_viewer.dart';
 import 'package:provider/provider.dart';
 
-String imagePath = 'assets/images/Map_angkor_wat.png';
-
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-      final language = context.watch<LanguageProvider>().current;
+    final language = context.watch<LanguageProvider>().current;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDark ? Colors.white : Colors.black,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Map',
+        title: Text(
+          LanguageService().getMapLabel(language),
           style: TextStyle(
-            color: Colors.black,
+            color: isDark ? Colors.white : Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -37,23 +39,27 @@ class MapScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Description Text
-            TempleMapViewer(
-              imagePath: imagePath,
-            ),
-            
-            const SizedBox(height: 34),
-            
-            Text(LanguageService().getMapDescription(language), 
+            Text(
+              'Angkor Wat is designed to represent the Hindu universe. The temple is built in a balanced, symmetrical layout, with structures arranged from the outer area toward the central towers.',
               style: TextStyle(
                 fontSize: 16,
                 height: 1.5,
-                color: Colors.black87,
+                color: isDark ? Colors.white70 : Colors.black87,
               ),
             ),
-            
-            
-            
+            const SizedBox(height: 12),
+            Text(
+              'This map shows how visitors move from the outer world toward the spiritual center of the temple.',
+              style: TextStyle(
+                fontSize: 16,
+                height: 1.5,
+                color: isDark ? Colors.white70 : Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const TempleMapViewer(
+              imagePath: 'assets/images/Map_angkor_wat.png',
+            ),
           ],
         ),
       ),
