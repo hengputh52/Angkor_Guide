@@ -28,16 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Temple> temples = [];
   User? currentUser;
 
-    @override 
-  void initState()
-  {
+  @override
+  void initState() {
     super.initState();
     loadTemples();
-    loadUser();
+    _loadUser();
   }
 
-  Future <void> loadTemples() async 
-  {
+  Future<void> loadTemples() async {
     final json = await JsonLoader.load(templeFilePath);
     final templeList = json['temples'] as List;
 
@@ -46,51 +44,55 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Future <void> loadUser() async
-  {
+  Future<void> _loadUser() async {
     final user = await UserService.getUser();
-    setState(() {
-      currentUser = user;
-    });
+    if (mounted) {
+      setState(() {
+        currentUser = user;
+      });
+    }
   }
 
-  void onAudio()
-  {
+  // Call this when returning from settings
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadUser(); // Reload user when screen is revisited
+  }
+
+  void onAudio() {
     Navigator.push(
       context,
       FlowPageRoute(page:  const AudioGuideScreen())
       );
   }
 
-
-  void onMapPressed(){
+  void onMapPressed() {
     Navigator.push(
       context,
        FlowPageRoute(page:  const MapScreen()),
     );
   }
-  void onClickTemple(Temple temple)
-  {
+
+  void onClickTemple(Temple temple) {
     Navigator.push(
       context,
       FlowPageRoute(page:  const AudioGuideScreen())
       );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final language = context.watch<LanguageProvider>().current;
-    
- 
+
     return Scaffold(
       drawer: DrawerBar(
         homeLabel: LanguageService().getHomeLabel(language),
         audioLabel: LanguageService().getAudioGuideLabel(language),
         mapLabel: LanguageService().getMapLabel(language),
         favoriteLabel: LanguageService().getFavoriteLabel(language),
-        settingLabel: LanguageService().getSettingLabel(language)
-        ),
+        settingLabel: LanguageService().getSettingLabel(language),
+      ),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.transparent,
@@ -99,8 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Image.asset(
             'assets/images/app_image.png',
             fit: BoxFit.cover,
-            
-            
+             
           ),
         ),
         
@@ -109,17 +110,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         
         actions: [
-          LanguageSwitchButton(onLanguageChanged: (code) {
-            final lang = Language.values.firstWhere(
-              (e) => e.code == code, orElse: () => Language.en 
-            );
-            context.read<LanguageProvider>().set(lang);
-          }
+          LanguageSwitchButton(
+            onLanguageChanged: (code) {
+              final lang = Language.values.firstWhere(
+                (e) => e.code == code,
+                orElse: () => Language.en,
+              );
+              context.read<LanguageProvider>().set(lang);
+            },
           ),
-          const SizedBox(width: 20)
-          ],
-        ),
-      backgroundColor: Colors.white,
+          const SizedBox(width: 20),
+        ],
+      ),
+      // backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -146,8 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const SizedBox(height: 24),
 
-              // 🔹 Explore Cards
-
+              // Explore Cards
               ...temples.map(
                 (temple) => Padding(
                   padding: EdgeInsets.only(bottom: 20),
@@ -155,11 +158,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: temple.image,
                     title: temple.getName(language),
                     onTap: () => onClickTemple(temple),
-                    ),
-                )
-              )
-              
-
+                  ),
+                ),
+              ),
             ],
           ),
         ),
