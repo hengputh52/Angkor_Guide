@@ -83,9 +83,10 @@ class _TempleMapViewerState extends State<TempleMapViewer> {
                   ],
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.zoom_out_map, size: 20),
+                  icon: const Icon(Icons.zoom_out_map, size: 15),
                   onPressed: _resetZoom,
                   tooltip: 'Reset zoom',
+                  color: Colors.black87,
                 ),
               ),
             ),

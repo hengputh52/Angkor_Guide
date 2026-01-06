@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ActionChipButton extends StatelessWidget {
@@ -12,26 +11,38 @@ class ActionChipButton extends StatelessWidget {
     required this.label,
     required this.onTap,
   });
+@override
+Widget build(BuildContext context) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black54),
-          borderRadius: BorderRadius.circular(0),
-          
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.grey.shade800 : Colors.white,
+        border: Border.all(
+          color: isDark ? Colors.grey.shade600 : Colors.grey.shade300,
         ),
-        child: Row(
-          children: [
-            Icon(icon, size: 20),
-            const SizedBox(width: 8),
-            Text(label),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(30),
       ),
-    );
-  }
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 20,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            label,
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 }

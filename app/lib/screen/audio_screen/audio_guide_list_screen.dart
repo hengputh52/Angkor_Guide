@@ -21,7 +21,6 @@ class AudioGuideListScreen extends StatefulWidget {
 
 class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
   List<PointOfInterest> spots = [];
-  
 
   @override
   void initState() {
@@ -44,8 +43,10 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
   @override
   Widget build(BuildContext context) {
     final language = context.watch<LanguageProvider>().current;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFDF8F5),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: DrawerBar(
         homeLabel: LanguageService().getHomeLabel(language),
         audioLabel: LanguageService().getAudioGuideLabel(language),
@@ -54,12 +55,20 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
         settingLabel: LanguageService().getSettingLabel(language),
       ),
       appBar: AppBar(
-        title: const Text('Angkor Guide'),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        foregroundColor: isDark ? Colors.white : Colors.black,
+        title: Text(
+          'Angkor Guide',
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black,
+          ),
+        ),
         actions: [
           LanguageSwitchButton(
             onLanguageChanged: (code) {
               final lang = Language.values.firstWhere(
-                (e) => e.code == code, orElse: () => Language.en
+                (e) => e.code == code,
+                orElse: () => Language.en,
               );
               context.read<LanguageProvider>().set(lang);
             },
@@ -75,9 +84,9 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
             const SizedBox(height: 8),
             Text(
               '${spots.length} ${LanguageService().getDestinationLabel(language)}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: Colors.black54,
+                color: isDark ? Colors.white70 : Colors.black54,
               ),
             ),
             const SizedBox(height: 16),
@@ -86,9 +95,7 @@ class _AudioGuideListScreenState extends State<AudioGuideListScreen> {
                 itemCount: spots.length,
                 itemBuilder: (context, index) {
                   final poi = spots[index];
-                  final guide =
-                      poi.guides[language] ??
-                      poi.guides[Language.en];
+                  final guide = poi.guides[language] ?? poi.guides[Language.en];
 
                   if (guide == null) {
                     return const SizedBox.shrink();

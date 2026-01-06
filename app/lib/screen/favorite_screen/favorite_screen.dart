@@ -63,9 +63,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     final language = context.watch<LanguageProvider>().current;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDF8F5),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: DrawerBar(
         homeLabel: LanguageService().getHomeLabel(language),
         audioLabel: LanguageService().getAudioGuideLabel(language),
@@ -74,11 +75,24 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         settingLabel: LanguageService().getSettingLabel(language),
       ),
       appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDark ? Colors.white : Colors.black,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(LanguageService().getFavoriteLabel(language)),
+        title: Text(
+          LanguageService().getFavoriteLabel(language),
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
         actions: [
           LanguageSwitchButton(
             onLanguageChanged: (code) {
@@ -99,62 +113,63 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 return FutureBuilder<List<PointOfInterest>>(
                   future: _getFavoritePois(favoriteService),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    final favoritePois = snapshot.data!;
+                    final favoritePois = snapshot.data ?? [];
+
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          Text(
-                            '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Expanded(
-                            child: favoritePois.isEmpty
-                                ? _buildEmptyState(language)
-                                : ListView.builder(
-                                    itemCount: favoritePois.length,
-                                    itemBuilder: (context, index) {
-                                      final poi = favoritePois[index];
-                                      final guide = poi.guides[language] ??
-                                          poi.guides[Language.en];
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(
+                        '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: isDark ? Colors.white70 : Colors.black54,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: favoritePois.isEmpty
+                            ? _buildEmptyState(isDark)
+                            : ListView.builder(
+                                itemCount: favoritePois.length,
+                                itemBuilder: (context, index) {
+                                  final poi = favoritePois[index];
+                                  final guide = poi.guides[language] ??
+                                      poi.guides[Language.en];
 
                                       if (guide == null) {
                                         return const SizedBox.shrink();
                                       }
 
-                                      return AudioGuideItem(
-                                        poiId: poi.id,
-                                        number: index + 1,
-                                        title: guide.title,
-                                        imagePath: poi.image,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => AudioGuidePlayerScreen(
-                                                points: favoritePois,
-                                                lanuage: language,
-                                                startIndex: index,
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                  return AudioGuideItem(
+                                    poiId: poi.id,
+                                    number: index + 1,
+                                    title: guide.title,
+                                    imagePath: poi.image,
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => AudioGuidePlayerScreen(
+                                            points: favoritePois,
+                                            lanuage: language,
+                                            startIndex: index,
+                                          ),
+                                        ),
                                       );
                                     },
-                                  ),
-                          ),
-                        ],
+                                  );
+                                },
+                              ),
                       ),
-                    );
+                    ],
+                  ),
+                );
                   },
                 );
               },
@@ -162,25 +177,32 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
-  Widget _buildEmptyState(Language language) {
+  Widget _buildEmptyState(bool isDark) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.bookmark_border, size: 64, color: Colors.grey.shade300),
+          Icon(
+            Icons.bookmark_border,
+            size: 64,
+            color: isDark ? Colors.grey[600] : Colors.grey.shade300,
+          ),
           const SizedBox(height: 16),
           Text(
             'No favorites yet',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+              color: isDark ? Colors.grey[400] : Colors.grey.shade600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Tap the bookmark icon to add favorites',
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+            style: TextStyle(
+              fontSize: 13,
+              color: isDark ? Colors.grey[500] : Colors.grey.shade500,
+            ),
           ),
         ],
       ),
