@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../model/point_of_interest.dart';
@@ -96,66 +97,61 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Consumer<FavoriteService>(
               builder: (context, favoriteService, child) {
-                return FutureBuilder<List<PointOfInterest>>(
-                  future: _getFavoritePois(favoriteService),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final favoritePois = snapshot.data!;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          Text(
-                            '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Expanded(
-                            child: favoritePois.isEmpty
-                                ? _buildEmptyState(language)
-                                : ListView.builder(
-                                    itemCount: favoritePois.length,
-                                    itemBuilder: (context, index) {
-                                      final poi = favoritePois[index];
-                                      final guide = poi.guides[language] ??
-                                          poi.guides[Language.en];
+                final favoritePois = _allPois
+                    .where((poi) => favoriteService.isFavorite(poi.id))
+                    .toList();
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(
+                        '${favoritePois.length} ${LanguageService().getDestinationLabel(language)}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: favoritePois.isEmpty
+                            ? _buildEmptyState(language)
+                            : ListView.builder(
+                                itemCount: favoritePois.length,
+                                itemBuilder: (context, index) {
+                                  final poi = favoritePois[index];
+                                  final guide = poi.guides[language] ??
+                                      poi.guides[Language.en];
 
                                       if (guide == null) {
                                         return const SizedBox.shrink();
                                       }
 
-                                      return AudioGuideItem(
-                                        poiId: poi.id,
-                                        number: index + 1,
-                                        title: guide.title,
-                                        imagePath: poi.image,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => AudioGuidePlayerScreen(
-                                                points: favoritePois,
-                                                lanuage: language,
-                                                startIndex: index,
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                  return AudioGuideItem(
+                                    poiId: poi.id,
+                                    number: index + 1,
+                                    title: guide.title,
+                                    imagePath: poi.image,
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => AudioGuidePlayerScreen(
+                                            points: favoritePois,
+                                            lanuage: language,
+                                            startIndex: index,
+                                          ),
+                                        ),
                                       );
                                     },
-                                  ),
-                          ),
-                        ],
+                                  );
+                                },
+                              ),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 );
               },
             ),
