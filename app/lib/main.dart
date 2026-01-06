@@ -63,9 +63,8 @@ void main() async {
   final languageProvider = LanguageProvider();
   await languageProvider.load();
 
-  // Initialize FavoriteService
+  // No need to initialize FavoriteService
   final favoriteService = FavoriteService();
-  await favoriteService.init();
 
   runApp(
     MultiProvider(
@@ -89,6 +88,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Angkor Tour',
         theme: ThemeData(
+          drawerTheme: DrawerThemeData(
+            backgroundColor: Colors.white,
+            
+          ),
           brightness: Brightness.light,
           scaffoldBackgroundColor: Colors.white,
           colorScheme: ColorScheme.fromSeed(

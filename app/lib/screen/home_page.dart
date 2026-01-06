@@ -8,6 +8,7 @@ import 'package:app/services/language_provide.dart';
 import 'package:app/services/language_service.dart';
 import 'package:app/services/user_service.dart';
 import 'package:app/widget/action_button.dart';
+import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:app/widget/drawer_bar.dart';
 import 'package:app/widget/explore_card.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
@@ -25,8 +26,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Temple> temples = [];
-  
-
   User? currentUser;
 
     @override 
@@ -59,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AudioGuideScreen())
+      FlowPageRoute(page:  const AudioGuideScreen())
       );
   }
 
@@ -67,14 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void onMapPressed(){
     Navigator.push(
       context,
-       MaterialPageRoute(builder: (context) => const MapScreen()),
+       FlowPageRoute(page:  const MapScreen()),
     );
   }
   void onClickTemple(Temple temple)
   {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AudioGuideScreen())
+      FlowPageRoute(page:  const AudioGuideScreen())
       );
   }
 
@@ -93,7 +92,21 @@ class _HomeScreenState extends State<HomeScreen> {
         settingLabel: LanguageService().getSettingLabel(language)
         ),
       appBar: AppBar(
-        title: Text(LanguageService().getWelcomeText(language, currentUser)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.transparent,
+        flexibleSpace: ClipRRect(
+          
+          child: Image.asset(
+            'assets/images/app_image.png',
+            fit: BoxFit.cover,
+            
+            
+          ),
+        ),
+        
+        title: Text(LanguageService().getWelcomeText(language, currentUser),
+        style: TextStyle(color: Colors.white)
+        ),
         
         actions: [
           LanguageSwitchButton(onLanguageChanged: (code) {
@@ -113,29 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-
-              const SizedBox(height: 20),
-
-              // 🔹 Search Bar
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'What are you looking for?',
-                  prefixIcon: const Icon(Icons.search),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
+              const SizedBox(height: 40),
               // 🔹 Action Buttons
               Row(
                 children: [

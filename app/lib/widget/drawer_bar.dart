@@ -2,6 +2,7 @@ import 'package:app/screen/audio_screen/audio_guide_screen.dart';
 import 'package:app/screen/favorite_screen/favorite_screen.dart';
 import 'package:app/screen/home_page.dart';
 import 'package:app/screen/map_screen/map_screen.dart';
+import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:flutter/material.dart';
 
 class DrawerBar extends StatelessWidget {
@@ -19,7 +20,7 @@ class DrawerBar extends StatelessWidget {
     {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen())
+        FlowPageRoute(page:  const HomeScreen())
       );
     }
 
@@ -27,60 +28,66 @@ class DrawerBar extends StatelessWidget {
     {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AudioGuideScreen())
+        FlowPageRoute(page:  const AudioGuideScreen())
       );
     }
 
     void onMapPressed(){
         Navigator.push(
           context,
-           MaterialPageRoute(builder: (context) => const MapScreen())
+           FlowPageRoute(page:  const MapScreen())
       ); 
     }
     void onFavorite(){
       Navigator.pop(context);
       Navigator.push(
         context,
-        MaterialPageRoute(builder:  (context) => const FavoriteScreen())
+        FlowPageRoute(page:  const FavoriteScreen())
         );
     }
     return Drawer(
-      backgroundColor: Colors.white,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        
+      shadowColor: Colors.white,
+      child: Stack(
         children: [
-          const SizedBox(height: 50),
-          _IconFeature(
-            icon: Icons.home,
-            title: homeLabel, 
-            onTap: onHome
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/drawer_background.png', 
+              fit: BoxFit.cover,
+            ),
           ),
-
-          _IconFeature(
-            icon: Icons.headphones,
-            title: audioLabel, 
-            onTap: onAudio
+          // Drawer content
+          ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const SizedBox(height: 50),
+              _IconFeature(
+                icon: Icons.home,
+                title: homeLabel, 
+                onTap: onHome
+              ),
+              _IconFeature(
+                icon: Icons.headphones,
+                title: audioLabel, 
+                onTap: onAudio
+              ),
+              _IconFeature(
+                icon: Icons.map,
+                title: mapLabel, 
+                onTap: onMapPressed,
+              ),
+              _IconFeature(
+                icon: Icons.favorite,
+                title: favoriteLabel, 
+                onTap: onFavorite,
+              ),
+              _IconFeature(
+                icon: Icons.settings,
+                title: settingLabel, 
+                onTap: (){}
+              ),
+            ],
           ),
-
-          _IconFeature(
-            icon: Icons.map,
-            title: mapLabel, 
-            onTap: onMapPressed,
-          ),
-
-          _IconFeature(
-            icon: Icons.favorite,
-            title: favoriteLabel, 
-            onTap: onFavorite,
-          ),
-
-          _IconFeature(
-            icon: Icons.settings,
-            title: settingLabel, 
-            onTap: (){}
-          ),
-
         ],
       ),
     );
@@ -100,17 +107,18 @@ class _IconFeature extends StatelessWidget{
     
     return SizedBox(
         height: 50,
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
+        child: TextButton.icon(
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.transparent,
             elevation: 0,
             alignment: Alignment.centerLeft,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.zero
-            )
+              ),
+              foregroundColor: Colors.white
             ),
-          icon: Icon(icon, color: Colors.black),
-          label: Text(title, style: TextStyle(color: Colors.black)),
+          icon: Icon(icon, color: Colors.white),
+          label: Text(title, style: TextStyle(color: Colors.white)),
           onPressed: onTap,
           
           ),
