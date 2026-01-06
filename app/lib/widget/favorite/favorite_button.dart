@@ -16,18 +16,22 @@ class FavoriteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<FavoriteService>(
       builder: (context, favoriteService, child) {
-        final isFavorite = favoriteService.isFavorite(poiId);
-
-        return IconButton(
-          icon: Icon(
-            isFavorite ? Icons.bookmark : Icons.bookmark_border,
-            color: Colors.black,
-            size: size,
-          ),
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-          onPressed: () {
-            favoriteService.toggleFavorite(poiId);
+        return FutureBuilder<bool>(
+          future: favoriteService.isFavorite(poiId),
+          builder: (context, snapshot) {
+            final isFavorite = snapshot.data ?? false;
+            return IconButton(
+              icon: Icon(
+                isFavorite ? Icons.bookmark : Icons.bookmark_border,
+                color: Colors.black,
+                size: size,
+              ),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onPressed: () {
+                favoriteService.toggleFavorite(poiId);
+              },
+            );
           },
         );
       },

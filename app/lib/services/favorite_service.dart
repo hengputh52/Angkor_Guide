@@ -1,81 +1,37 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../model/favorite.dart';
+import '../services/user_service.dart';
 
 class FavoriteService extends ChangeNotifier {
-  List<Favorite> _favorites = [];
-  static const String _storageKey = 'favorites';
-
-  List<Favorite> get favorites => _favorites;
-
-  // Initialize - Load favorites from storage
-  Future<void> init() async {
-    await _loadFavorites();
+  // Check if a POI is favorited by the current user
+  Future<bool> isFavorite(String poiId) async {
+    final user = await UserService.getUser();
+    if (user == null) return false;
+    return user.favorites.any((fav) => fav.poiId == poiId);
   }
 
-  // Check if a POI is favorited
-  bool isFavorite(String poiId) {
-    return _favorites.any((fav) => fav.poiId == poiId);
-  }
-
-  // Toggle favorite status
+  // Toggle favorite status for the current user
   Future<void> toggleFavorite(String poiId) async {
-    if (isFavorite(poiId)) {
-      await removeFavorite(poiId);
+    final user = await UserService.getUser();
+    if (user == null) return;
+    if (user.favorites.any((f) => f.poiId == poiId)) {
+      user.favorites.removeWhere((f) => f.poiId == poiId);
     } else {
-      await addFavorite(poiId);
+      user.favorites.add(Favorite(poiId: poiId, addedAt: DateTime.now()));
     }
-  }
-
-  // Add to favorites
-  Future<void> addFavorite(String poiId) async {
-    if (!isFavorite(poiId)) {
-      _favorites.add(Favorite(
-        poiId: poiId,
-        addedAt: DateTime.now(),
-      ));
-      await _saveFavorites();
-      notifyListeners();
-    }
-  }
-
-  // Remove from favorites
-  Future<void> removeFavorite(String poiId) async {
-    _favorites.removeWhere((fav) => fav.poiId == poiId);
-    await _saveFavorites();
+    await UserService.saveUser(user);
     notifyListeners();
   }
 
-  // Get favorite count
-  int get count => _favorites.length;
-
-  // Load favorites from SharedPreferences
-  Future<void> _loadFavorites() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? jsonString = prefs.getString(_storageKey);
-
-      if (jsonString != null) {
-        final List<dynamic> jsonList = json.decode(jsonString);
-        _favorites = jsonList.map((e) => Favorite.fromJson(e)).toList();
-        notifyListeners();
-      }
-    } catch (e) {
-      debugPrint('Error loading favorites: $e');
-    }
+  // Get all favorites for the current user
+  Future<List<Favorite>> getFavorites() async {
+    final user = await UserService.getUser();
+    return user?.favorites ?? [];
   }
 
-  // Save favorites to SharedPreferences
-  Future<void> _saveFavorites() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String jsonString = json.encode(
-        _favorites.map((f) => f.toJson()).toList(),
-      );
-      await prefs.setString(_storageKey, jsonString);
-    } catch (e) {
-      debugPrint('Error saving favorites: $e');
-    }
+  // Get favorite count for the current user
+  Future<int> getCount() async {
+    final user = await UserService.getUser();
+    return user?.favorites.length ?? 0;
   }
 }

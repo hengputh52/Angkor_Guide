@@ -45,7 +45,8 @@ class DrawerBar extends StatelessWidget {
         );
     }
     return Drawer(
-      backgroundColor: Colors.white,
+      shadowColor: Colors.white,
+      
       child: ListView(
         padding: EdgeInsets.zero,
         
@@ -100,14 +101,15 @@ class _IconFeature extends StatelessWidget{
     
     return SizedBox(
         height: 50,
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
+        child: TextButton.icon(
+          style: TextButton.styleFrom(
             backgroundColor: Colors.white,
             elevation: 0,
             alignment: Alignment.centerLeft,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.zero
-            )
+              ),
+              foregroundColor: Colors.black
             ),
           icon: Icon(icon, color: Colors.black),
           label: Text(title, style: TextStyle(color: Colors.black)),
