@@ -22,11 +22,19 @@ class ExploreCard extends StatelessWidget {
             height: 250,
             width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(0),
               image: DecorationImage(
                 image: AssetImage(image),
                 fit: BoxFit.cover,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.8), 
+                  spreadRadius: 5,                   
+                  blurRadius: 7,                     
+                  offset: Offset(0, 3),   
+                )
+              ]
             ),
           ),
       

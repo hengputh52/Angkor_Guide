@@ -20,8 +20,9 @@ class ActionChipButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: Colors.black54),
+          borderRadius: BorderRadius.circular(0),
+          
         ),
         child: Row(
           children: [

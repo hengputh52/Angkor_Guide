@@ -8,6 +8,7 @@ import 'package:app/services/language_provide.dart';
 import 'package:app/services/language_service.dart';
 import 'package:app/services/user_service.dart';
 import 'package:app/widget/action_button.dart';
+import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:app/widget/drawer_bar.dart';
 import 'package:app/widget/explore_card.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AudioGuideScreen())
+      FlowPageRoute(page:  const AudioGuideScreen())
       );
   }
 
@@ -65,14 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void onMapPressed(){
     Navigator.push(
       context,
-       MaterialPageRoute(builder: (context) => const MapScreen()),
+       FlowPageRoute(page:  const MapScreen()),
     );
   }
   void onClickTemple(Temple temple)
   {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AudioGuideScreen())
+      FlowPageRoute(page:  const AudioGuideScreen())
       );
   }
 

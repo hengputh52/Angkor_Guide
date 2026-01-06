@@ -3,7 +3,6 @@ import 'package:app/model/user.dart';
 import 'package:app/screen/home_page.dart';
 import 'package:app/services/language_provide.dart';
 import 'package:app/services/language_service.dart';
-import 'package:app/widget/animations/fade_slide_animation.dart';
 import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +44,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         lastName: _lastNameController.text.trim()
       );
       await UserService.saveUser(user);
-      Navigator.of(context).pushReplacement(
-              FlowPageRoute(page: const HomeScreen()),
-            );
+      Navigator.push(
+        context,
+        FlowPageRoute(page: const HomeScreen()),
+        );
     }
   }
 
@@ -131,10 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 // 🔹 Form Section + Continue Button as one child
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: FadeSlide(
-                    begin: Offset(0, 0.4),
-                    child: 
-                  Form(
+                  child: Form(
                     key: _formkey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,7 +249,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                   ),
-                ),
                 ),
               ],
             ),

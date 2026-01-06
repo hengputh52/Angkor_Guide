@@ -1,5 +1,5 @@
 import 'package:app/screen/signup_screen.dart';
-import 'package:app/widget/animations/fade_slide_animation.dart';
+import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -37,7 +37,7 @@ class _StartScreenState extends State<StartScreen> {
   {
     Navigator.push(
       context, 
-      MaterialPageRoute(builder: (context) => const SignUpScreen())
+      FlowPageRoute(page:  const SignUpScreen())
       );
   }
 
@@ -116,7 +116,7 @@ class _StartScreenState extends State<StartScreen> {
             right: 20,
             child: SizedBox(
               height: 55,
-              child: FadeSlide(
+              
                 child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -142,7 +142,6 @@ class _StartScreenState extends State<StartScreen> {
               ),
             ),
             ),
-          ),
         ],
       ),
     );
