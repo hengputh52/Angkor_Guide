@@ -5,7 +5,7 @@ class FlowPageRoute extends PageRouteBuilder {
 
   FlowPageRoute({required this.page})
       : super(
-          transitionDuration: const Duration(milliseconds: 500),
+          transitionDuration: const Duration(milliseconds: 700),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, secondaryAnimation) => page,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

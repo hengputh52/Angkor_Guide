@@ -2,6 +2,7 @@ import 'package:app/model/language.dart';
 import 'package:app/screen/audio_screen/audio_guide_list_screen.dart';
 import 'package:app/services/language_provide.dart';
 import 'package:app/services/language_service.dart';
+import 'package:app/widget/animations/flow_page_animation.dart';
 import 'package:app/widget/drawer_bar.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class AudioGuideScreen extends StatelessWidget {
     {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AudioGuideListScreen())
+        FlowPageRoute(page:  const AudioGuideListScreen())
         );
     }
     return Scaffold(
