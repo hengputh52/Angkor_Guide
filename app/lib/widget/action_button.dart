@@ -24,7 +24,7 @@ Widget build(BuildContext context) {
         border: Border.all(
           color: isDark ? Colors.grey.shade600 : Colors.grey.shade300,
         ),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Row(
         children: [

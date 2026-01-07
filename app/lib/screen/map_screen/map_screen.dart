@@ -39,27 +39,22 @@ class MapScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Angkor Wat is designed to represent the Hindu universe. The temple is built in a balanced, symmetrical layout, with structures arranged from the outer area toward the central towers.',
-              style: TextStyle(
-                fontSize: 16,
-                height: 1.5,
-                color: isDark ? Colors.white70 : Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'This map shows how visitors move from the outer world toward the spiritual center of the temple.',
-              style: TextStyle(
-                fontSize: 16,
-                height: 1.5,
-                color: isDark ? Colors.white70 : Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 24),
-            const TempleMapViewer(
+              const TempleMapViewer(
               imagePath: 'assets/images/Map_angkor_wat.png',
             ),
+
+            const SizedBox(height: 24),
+            
+            Text(
+              LanguageService().getMapDescription(language),
+              style: TextStyle(
+                fontSize: 16,
+                height: 1.5,
+                color: isDark ? Colors.white70 : Colors.black87,
+              ),
+            ),
+            
+
           ],
         ),
       ),

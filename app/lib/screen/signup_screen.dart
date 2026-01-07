@@ -4,6 +4,7 @@ import 'package:app/screen/home_page.dart';
 import 'package:app/services/language_provide.dart';
 import 'package:app/services/language_service.dart';
 import 'package:app/widget/animations/flow_page_animation.dart';
+import 'package:app/widget/authForm/auth_form.dart';
 import 'package:app/widget/lanaguage/langauge_switch_button.dart';
 import 'package:flutter/material.dart';
 import 'package:app/services/user_service.dart';
@@ -20,47 +21,85 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formkey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  @override 
-  void initState()
-  {
-    super.initState();
-  }
+  bool _isLogin = false;
+  String? _loginError;
 
-  @override  
-  void dispose()
-  {
-    super.dispose();
+  @override
+  void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-  }
-
-  void onContinue() async
-  {
-    if(_formkey.currentState != null && _formkey.currentState!.validate())
-    {
-      final user = User(
-        firstName: _firstNameController.text.trim(),
-        lastName: _lastNameController.text.trim()
-      );
-      await UserService.saveUser(user);
-      Navigator.push(
-        context,
-        FlowPageRoute(page: const HomeScreen()),
-        );
-    }
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   String? validateName(String? value) {
     final language = context.read<LanguageProvider>().current;
-  if (value == null || value.isEmpty) {
-    return LanguageService().getValidateMessage(language);
+    if (value == null || value.isEmpty) {
+      return LanguageService().getValidateNameMessage(language);
+    }
+    return null;
   }
-  return null;
-}
 
-  
-  
+  String? validateUsername(String? value) {
+    final language = context.read<LanguageProvider>().current;
+    if (value == null || value.isEmpty) {
+      return LanguageService().getValidateUsernameMessage(language);
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    final language = context.read<LanguageProvider>().current;
+    if (value == null || value.isEmpty) {
+      return LanguageService().getValidatePasswordMessage(language);
+    }
+    if (value.length < 4) {
+      return LanguageService().getValidatePasswordLengthMessage(language);
+    }
+    return null;
+  }
+
+  void onContinue() async {
+    if (_formkey.currentState != null && _formkey.currentState!.validate()) {
+      if (_isLogin) {
+        // Login logic
+        final success = await UserService.login(
+          _usernameController.text.trim(),
+          _passwordController.text.trim(),
+        );
+        if (success) {
+          Navigator.pushReplacement(
+            context,
+            FlowPageRoute(page: const HomeScreen()),
+          );
+        } else {
+          setState(() {
+            _loginError = LanguageService().getInvalidUsernameOrPassword(
+              context.read<LanguageProvider>().current,
+            );
+          });
+        }
+      } else {
+        // Sign up logic
+        final user = User(
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          username: _usernameController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        await UserService.saveUser(user);
+        Navigator.pushReplacement(
+          context,
+          FlowPageRoute(page: const HomeScreen()),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final language = context.watch<LanguageProvider>().current;
@@ -69,13 +108,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Stack(
         children: [
           // Background illustration image
-          
           Positioned.fill(
             child: Image.asset(
               'assets/images/angkor_thom.png',
               fit: BoxFit.cover,
-               // Optional: fade effect
-              //colorBlendMode: BlendMode.dstATop,
             ),
           ),
           // Foreground content
@@ -88,47 +124,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // 🔹 Header
+                // Header
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           CircleAvatar(
-                        radius: 18,
-                        backgroundColor: Colors.white,
-                        backgroundImage:
-                            AssetImage('assets/images/bayon_face.png'),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Angkor Guide',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        ),
+                            radius: 18,
+                            backgroundColor: Colors.white,
+                            backgroundImage: AssetImage('assets/images/bayon_face.png'),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'Angkor Guide',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ],
                       ),
-                      
                       LanguageSwitchButton(
-                        onLanguageChanged: (code)
-                        {
+                        onLanguageChanged: (code) {
                           final lang = Language.values.firstWhere(
                             (e) => e.code == code, orElse: () => Language.en,
                           );
                           context.read<LanguageProvider>().set(lang);
-                        })
+                        },
+                      )
                     ],
                   ),
                 ),
-                //const SizedBox(height: 60), // Add space since illustration is now background
-
-                // 🔹 Form Section + Continue Button as one child
+                // Form Section + Continue Button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Form(
@@ -136,109 +167,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          LanguageService().getFirstNameLabel(language),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        // Toggle login/signup
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                           
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                            validator: validateName,
-                            style: TextStyle(color: Colors.white),
-                            controller: _firstNameController,
-                            decoration: InputDecoration(
-                              hintText: LanguageService().getHintTextFirstName(language),
-                              
-                              hintStyle: TextStyle(color: const Color.fromARGB(255, 229, 224, 224)),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 14,
-                                
-                              
-                                
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide: BorderSide(color: Colors.white70, width: 0.5),
-                                
-                                
-                                
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide: const BorderSide(color: Colors.white),
-                                
-                              ),
-                              filled: true,
-                              fillColor: Colors.white10
+                        if (_loginError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Text(
+                              _loginError!,
+                              style: const TextStyle(color: Colors.red),
                             ),
                           ),
-                        const SizedBox(height: 30),
-
-                         Text(
-                            LanguageService().getLastNameLabel(language),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        // Use AuthForm here!
+                        AuthForm(
+                          isLogin: _isLogin,
+                          firstNameController: _firstNameController,
+                          lastNameController: _lastNameController,
+                          usernameController: _usernameController,
+                          passwordController: _passwordController,
+                          validateName: validateName,
+                          validateUsername: validateUsername,
+                          validatePassword: validatePassword,
+                          firstNameLabel: LanguageService().getFirstNameLabel(language),
+                          firstNameHint: LanguageService().getHintTextFirstName(language),
+                          lastNameLabel: LanguageService().getLastNameLabel(language),
+                          lastNameHint: LanguageService().getHintTextLastName(language),
+                          usernameLabel: LanguageService().getUserNameLabel(language),
+                          usernameHint: LanguageService().getHintUserNameLabel(language),
+                          passwordLabel: LanguageService().getPasswordLabel(language),
+                          passwordHint: LanguageService().getHintPasswordLabel(language),
                         ),
-                        const SizedBox(height: 8),
-
-                        TextFormField(
-                            validator: validateName,
-                            style: TextStyle(color: Colors.white),
-                            controller: _lastNameController,
-                            decoration: InputDecoration(
-                              hintText: LanguageService().getHintTextLastName(language),
-                              
-                              hintStyle: TextStyle(color: const Color.fromARGB(255, 229, 224, 224)),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 14,
-                                
-                              
-                                
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide: BorderSide(color: Colors.white70, width: 0.5),
-                                
-                                
-                                
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide: const BorderSide(color: Colors.white),
-                                
-                              ),
-                              filled: true,
-                              fillColor: Colors.white10
-                            ),
-                          ),
-                        
-                        const SizedBox(height: 30),
                         SizedBox(
                           width: double.infinity,
                           height: 55,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
-                    
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0),
-                                
                               ),
                             ),
                             onPressed: onContinue,
-                            
                             child: Text(
-                              LanguageService().getContinueButtonLabel(language),
-                              style: TextStyle(
+                              _isLogin
+                                ? LanguageService().getLoginButtonLabel(language)
+                                : LanguageService().getContinueButtonLabel(language),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w600,
@@ -246,6 +225,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
+                         TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isLogin = !_isLogin;
+                                  _loginError = null;
+                                });
+                              },
+                              child: Text(
+                                _isLogin
+                                  ? LanguageService().getDontHaveAccount(language)
+                                  : LanguageService().getAlreadyHaveAccount(language),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
                       ],
                     ),
                   ),

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:app/model/language.dart';
+import 'package:app/services/language_service.dart';
 
 class ExploreCard extends StatelessWidget {
   final String image;
   final String title;
   final VoidCallback? onTap;
+  final Language language;
 
   const ExploreCard({
     super.key,
     required this.image,
     required this.title,
-    this.onTap
+    required this.language,
+    this.onTap,
   });
 
   @override
@@ -29,27 +33,25 @@ class ExploreCard extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.8), 
-                  spreadRadius: 5,                   
-                  blurRadius: 7,                     
-                  offset: Offset(0, 3),   
+                  color: Colors.grey.withOpacity(0.8),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
                 )
               ]
             ),
           ),
-      
+
           Positioned(
             top: 16,
             left: 16,
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.85),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: 
-              Text(
+              child: Text(
                 title,
                 style: const TextStyle(
                   color: Colors.black,
@@ -59,20 +61,20 @@ class ExploreCard extends StatelessWidget {
               ),
             ),
           ),
-      
+
           Positioned(
             bottom: 16,
             left: 20,
-            child: const Text(
-              'Explore Now',
-              style: TextStyle(
+            child: Text(
+              LanguageService().getExploreNowLabel(language),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-      
+
           Positioned(
             bottom: 14,
             right: 14,
@@ -84,7 +86,6 @@ class ExploreCard extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(Icons.arrow_outward, color: Colors.black),
-              
             ),
           ),
         ],

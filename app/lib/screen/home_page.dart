@@ -157,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ExploreCard(
                     image: temple.image,
                     title: temple.getName(language),
+                    language: language,
                     onTap: () => onClickTemple(temple),
                   ),
                 ),
