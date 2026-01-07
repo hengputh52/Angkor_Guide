@@ -1,4 +1,7 @@
+import 'package:app/services/language_provide.dart';
+import 'package:app/services/language_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../model/user.dart';
 import '../../services/user_service.dart';
 
@@ -49,11 +52,14 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
       return;
     }
 
-    // Create updated user (keep same ID if exists)
+    // Create updated user (keep same ID, username, password, favorites)
     final updatedUser = User(
       userId: _currentUser?.id,
       firstName: firstName,
       lastName: lastName,
+      username: _currentUser?.username ?? '',
+      password: _currentUser?.password ?? '',
+      favorites: _currentUser?.favorites,
     );
 
     // Save user
@@ -69,6 +75,7 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = context.watch<LanguageProvider>().current;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -79,7 +86,7 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Change Name',
+          'User Profile',
           style: TextStyle(
             color: Theme.of(context).textTheme.titleLarge?.color,
             fontSize: 20,
@@ -95,7 +102,7 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
           children: [
             // First Name Label
             Text(
-              'First Name',
+              LanguageService().getFirstNameLabel(language),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -108,18 +115,18 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
             TextField(
               controller: _firstNameController,
               decoration: InputDecoration(
-                hintText: 'Enter your name',
+                hintText: LanguageService().getHintTextFirstName(language),
                 hintStyle: TextStyle(color: Colors.grey.shade400),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(0),
                   borderSide: BorderSide(color: Colors.grey.shade300),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(0),
                   borderSide: BorderSide(color: Colors.grey.shade300),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(0),
                   borderSide: const BorderSide(color: Colors.blue),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -129,7 +136,7 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
 
             // Last Name Label
             Text(
-              'Last Name',
+              LanguageService().getLastNameLabel(language),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -142,33 +149,24 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
             TextField(
               controller: _lastNameController,
               decoration: InputDecoration(
-                hintText: 'Enter your name',
+                hintText: LanguageService().getHintTextLastName(language),
                 hintStyle: TextStyle(color: Colors.grey.shade400),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(0),
                   borderSide: BorderSide(color: Colors.grey.shade300),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(0),
                   borderSide: BorderSide(color: Colors.grey.shade300),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(0),
                   borderSide: const BorderSide(color: Colors.blue),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),
             ),
             const SizedBox(height: 16),
-
-            // Note
-            Text(
-              'This name will be shown on the screen.',
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey.shade600,
-              ),
-            ),
 
             const Spacer(),
 
@@ -182,11 +180,11 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
                   backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(0),
                   ),
                 ),
                 child: Text(
-                  'Save',
+                  LanguageService().getSaveButtonLabel(language),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

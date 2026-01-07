@@ -141,11 +141,66 @@ class LanguageService {
   String getContinueButtonLabel(Language language) {
     switch (language) {
       case Language.en:
-        return 'Continue';
+        return 'Sign Up';
       case Language.kh:
-        return 'បន្ត';
+        return 'ចុះឈ្មោះ';
       case Language.fr:
-        return 'Continuer';
+        return 'S\'inscrire';
+    }
+  }
+
+  String getPasswordLabel(Language language) {
+    switch (language) {
+      case Language.en:
+        return 'Password';
+      case Language.kh:
+        return 'ពាក្យសម្ងាត់';
+      case Language.fr:
+        return 'Mot de passe';
+    }
+  }
+
+  String getHintPasswordLabel(Language language) {
+    switch (language) {
+      case Language.en:
+        return 'Enter your Password';
+      case Language.kh:
+        return 'បញ្ចូលពាក្យសម្ងាត់របស់អ្នក';
+      case Language.fr:
+        return 'Entrez votre mot de passe';
+    }
+  }
+
+  String getUserNameLabel(Language language) {
+    switch (language) {
+      case Language.en:
+        return 'User Name';
+      case Language.kh:
+        return 'ឈ្មោះអ្នកប្រើ';
+      case Language.fr:
+        return 'Nom d\'utilisateur';
+    }
+  }
+
+  String getHintUserNameLabel(Language language) {
+    switch (language) {
+      case Language.en:
+        return 'Enter your User Name';
+      case Language.kh:
+        return 'បញ្ចូលឈ្មោះអ្នកប្រើរបស់អ្នក';
+      case Language.fr:
+        return 'Entrez votre nom d\'utilisateur';
+    }
+  }
+
+  String getLoginButtonLabel(Language language) {
+    switch (language) {
+      case Language.en:
+        return 'Log in';
+      case Language.kh:
+        return 'ចូល';
+      case Language.fr:
+        return 'Se connecter';
     }
   }
 
@@ -171,18 +226,51 @@ class LanguageService {
     }
   }
 
-  String getValidateMessage(Language language) {
+  String getValidateNameMessage(Language language) {
     switch (language) {
       case Language.en:
-        return 'Name cannot be empty';
+        return "Name cannot be empty";
       case Language.kh:
-        return 'ឈ្មោះមិនអាចទទេបានទេ';
+        return "ឈ្មោះមិនអាចទទេបានទេ";
       case Language.fr:
-        return 'Le nom ne peut pas être vide';
+        return "Le nom ne peut pas être vide";
     }
   }
 
-  String getMapDescription(Language language) {
+  String getValidateUsernameMessage(Language language) {
+    switch (language) {
+      case Language.en:
+        return "Username cannot be empty";
+      case Language.kh:
+        return "ឈ្មោះអ្នកប្រើមិនអាចទទេបានទេ";
+      case Language.fr:
+        return "Le nom d'utilisateur ne peut pas être vide";
+    }
+  }
+
+  String getValidatePasswordMessage(Language language) {
+    switch (language) {
+      case Language.en:
+        return "Password cannot be empty";
+      case Language.kh:
+        return "ពាក្យសម្ងាត់មិនអាចទទេបានទេ";
+      case Language.fr:
+        return "Le mot de passe ne peut pas être vide";
+    }
+  }
+
+  String getValidatePasswordLengthMessage(Language language) {
+    switch (language) {
+      case Language.en:
+        return "Password must be at least 4 characters";
+      case Language.kh:
+        return "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 4 តួអក្សរ";
+      case Language.fr:
+        return "Le mot de passe doit comporter au moins 4 caractères";
+    }
+  }
+
+String getMapDescription(Language language) {
     switch (language) {
       case Language.en:
         return 'Angkor Wat is designed to represent the Hindu universe. The temple is built in a balanced, symmetrical layout, with structures arranged from the outer area toward the central towers. '
@@ -207,5 +295,205 @@ class LanguageService {
     }
   }
 
+  String getInvalidUsernameOrPassword(Language language) {
+    switch (language) {
+      case Language.en:
+        return "Invalid username or password";
+      case Language.kh:
+        return "ឈ្មោះអ្នកប្រើ ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ";
+      case Language.fr:
+        return "Nom d'utilisateur ou mot de passe invalide";
+    }
+  }
+
+  String getDontHaveAccount(Language language) {
+    switch (language) {
+      case Language.en:
+        return "Don't have an account? Sign up";
+      case Language.kh:
+        return "មិនទាន់មានគណនី? ចុះឈ្មោះ";
+      case Language.fr:
+        return "Vous n'avez pas de compte ? Inscrivez-vous";
+    }
+  }
+
+  String getAlreadyHaveAccount(Language language) {
+    switch (language) {
+      case Language.en:
+        return "Already have an account? Log in";
+      case Language.kh:
+        return "មានគណនីរួចហើយ? ចូល";
+      case Language.fr:
+        return "Vous avez déjà un compte ? Connectez-vous";
+    }
+  }
+
+  String getSettingButtonLabel(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Setting';
+      case Language.kh:
+        return 'ការកំណត់';
+      case Language.fr:
+        return 'Paramètres';
+    }
+  }
+
+  String getUserProfileText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Your Profile';
+      case Language.kh:
+        return 'ប្រវត្តិរូបរបស់អ្នក';
+      case Language.fr:
+        return 'Votre profil';
+    }
+  }
+
+String getUpdateProfileText(Language language) {
+  switch (language) {
+    case Language.en:
+      return 'Update Profile';
+    case Language.kh:
+      return 'ធ្វើបច្ចុប្បន្នភាពប្រវត្តិរូប';
+    case Language.fr:
+      return 'Mettre à jour le profil';
+  }
+}
+
+  String getSaveButtonLabel(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Save';
+      case Language.kh:
+        return 'រក្សាទុក';
+      case Language.fr:
+        return 'Enregistrer';
+    }
+  }
+
+  String getDarkModelText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Dark Mode';
+      case Language.kh:
+        return 'របៀបងងឹត';
+      case Language.fr:
+        return 'Mode sombre';
+    }
+  }
+
+  String changePasswordText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Change Password';
+      case Language.kh:
+        return 'ផ្លាស់ប្តូរពាក្យសម្ងាត់';
+      case Language.fr:
+        return 'Changer le mot de passe';
+    }
+  }
+
+  String getLogout(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Log out';
+      case Language.kh:
+        return 'ចាកចេញ';
+      case Language.fr:
+        return 'Se déconnecter';
+    }
+  }
+
+  String getShowModalText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Are you sure you want to log out?';
+      case Language.kh:
+        return 'តើអ្នកប្រាកដថាចង់ចាកចេញមែនទេ?';
+      case Language.fr:
+        return 'Êtes-vous sûr de vouloir vous déconnecter ?';
+    }
+  }
+
+  String getYesText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Yes';
+      case Language.kh:
+        return 'បាទ/ចាស';
+      case Language.fr:
+        return 'Oui';
+    }
+  }
+
+  String getNoText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'No';
+      case Language.kh:
+        return 'ទេ';
+      case Language.fr:
+        return 'Non';
+    }
+  }
+
+  String getOldPasswordText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'Old Password';
+      case Language.kh:
+        return 'ពាក្យសម្ងាត់ចាស់';
+      case Language.fr:
+        return 'Ancien mot de passe';
+    }
+  }
+
+  String getNewPasswordText(Language language)
+  {
+    switch(language)
+    {
+      case Language.en:
+        return 'New Password';
+      case Language.kh:
+        return 'ពាក្យសម្ងាត់ថ្មី';
+      case Language.fr:
+        return 'Nouveau mot de passe';
+    }
+  }
+
+  String getExploreNowLabel(Language language) {
+  switch (language) {
+    case Language.en:
+      return 'Explore Now';
+    case Language.kh:
+      return 'ស្វែងយល់ឥឡូវនេះ';
+    case Language.fr:
+      return 'Explorer maintenant';
+  }
+}
+
   
+
+
 }
